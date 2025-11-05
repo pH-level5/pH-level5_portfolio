@@ -1,3 +1,14 @@
+---
+title: "Learning 3D Modeling Basics"
+date: "OCT 28, 2025"
+description: "Starting my journey into 3D modeling for game assets. Focusing on learning proper topology and UV mapping with Blender."
+tags: [3D Modeling, Learning, Blender, Game Assets]
+category: LEARNING
+icon: fas fa-cube
+readTime: 6 min read
+status: LEARNING
+---
+
 # Learning 3D Modeling Basics
 
 As a programmer transitioning into 3D art, I'm documenting my journey learning 3D modeling for game assets. Here are my first impressions and key takeaways.

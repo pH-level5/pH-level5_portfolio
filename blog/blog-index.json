@@ -1,0 +1,10 @@
+{
+  "posts": [
+    "new-blog-system.md",
+    "10k-downloads.md",
+    "3d-modeling-basics.md",
+    "template.md"
+  ],
+  "description": "Blog post index - add new markdown files here for automatic loading"
+}
+

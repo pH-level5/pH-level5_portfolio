@@ -758,7 +758,6 @@ body {
    ================================ */
 
 .fullpost-container {
-  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -816,6 +815,7 @@ body {
   padding: var(--spacing-xl);
   box-shadow: var(--shadow-lg);
   position: relative;
+  filter: drop-shadow(0 0 5px rgba(55, 141, 184, 0.5));
 }
 
 /* Dotted shading on full post */
@@ -1081,6 +1081,13 @@ body {
   flex-wrap: wrap;
 }
 
+.blog-card-header  {
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
 .card-icon {
   width: 48px;
   height: 48px;
@@ -1227,22 +1234,27 @@ body {
 
 .expandable-text {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-}
-
-.text-preview,
-.text-full {
   display: block;
+  line-height: 1.6;
+}
+
+.text-preview {
+  display: inline !important;
+  visibility: visible !important;
 }
 
 .text-full {
-  display: none;
+  display: none !important;
+  visibility: hidden !important;
+  max-height: 0 !important;
+  overflow: hidden !important;
 }
 
 .text-full.typing {
-  display: block;
+  display: block !important;
+  visibility: visible !important;
+  max-height: none !important;
+  overflow: visible !important;
   position: relative;
   min-height: 1.5em;
 }
@@ -1255,7 +1267,10 @@ body {
 }
 
 .text-full.typed {
-  display: block;
+  display: block !important;
+  visibility: visible !important;
+  max-height: none !important;
+  overflow: visible !important;
 }
 
 @keyframes blink-caret {
@@ -1268,9 +1283,8 @@ body {
 }
 
 .read-more-btn {
-  display: inline-block;
-  align-self: flex-start;
-  margin-top: var(--spacing-xs);
+  display: block;
+  margin-top: var(--spacing-sm);
   padding: 0.5rem 1rem;
   background: rgba(76, 194, 255, 0.1);
   border: 1px solid var(--color-accent);
@@ -1278,6 +1292,7 @@ body {
   color: var(--color-accent);
   font-family: var(--font-mono);
   font-size: 0.75rem;
+  width: fit-content;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   cursor: pointer;

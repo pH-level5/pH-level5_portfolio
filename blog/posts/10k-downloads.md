@@ -1,3 +1,14 @@
+---
+title: "Reaching 10k Downloads: What I Learned"
+date: "NOV 4, 2025"
+description: "Lessons learned from reaching 10,000 downloads on my Garry's Mod addon. Good documentation and listening to community feedback made a huge difference."
+tags: [GMod, Lua, Community, Open Source]
+category: MILESTONE
+icon: fas fa-trophy
+readTime: 7 min read
+status: MILESTONE
+---
+
 # Reaching 10k Downloads: What I Learned
 
 After months of development and community engagement, my Garry's Mod addon finally hit the incredible milestone of **10,000 downloads**. Here's what I learned along the way.

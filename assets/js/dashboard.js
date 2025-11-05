@@ -17,6 +17,15 @@
     initCounters();
     initCanvasBackground();
     initScrollAnimations();
+    
+    // Ensure fullpost section is hidden initially
+    const fullpostSection = document.getElementById('fullpost');
+    if (fullpostSection) {
+      fullpostSection.style.display = 'none';
+      fullpostSection.classList.remove('active');
+    }
+    
+    initAutoBlogGeneration(); // Auto-generate blog cards from markdown files
     initBlogPostViewer();
     console.log('✓ Dashboard initialized');
   });
@@ -65,79 +74,90 @@
   // ================================
 
   function initExpandableText() {
-    const expandableTexts = document.querySelectorAll('.expandable-text');
-
-    expandableTexts.forEach(text => {
-      const btn = text.querySelector('.read-more-btn');
+    // Use event delegation for dynamically generated content
+    document.addEventListener('click', function(e) {
+      const btn = e.target.closest('.read-more-btn');
       if (!btn) return;
 
-      const preview = text.querySelector('.text-preview');
-      const full = text.querySelector('.text-full');
+      e.preventDefault();
+      e.stopPropagation();
+
+      const expandableText = btn.closest('.expandable-text');
+      if (!expandableText) return;
+
+      const preview = expandableText.querySelector('.text-preview');
+      const full = expandableText.querySelector('.text-full');
       if (!preview || !full) return;
 
-      let isExpanded = false;
-      let typingInterval = null;
+      // Check current state based on display (consider both inline style and computed style)
+      const fullDisplay = window.getComputedStyle(full).display;
+      const isExpanded = fullDisplay !== 'none';
 
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        if (!isExpanded) {
-          // Expand: Show full text with fast typewriter effect
-          preview.style.display = 'none';
-          
-          // Store the original text
-          const fullText = full.textContent;
-          full.textContent = '';
-          full.classList.add('typing');
-          full.style.display = 'block';
-          
-          // Fast typewriter effect (8ms per character)
-          let charIndex = 0;
-          typingInterval = setInterval(() => {
-            if (charIndex < fullText.length) {
-              full.textContent += fullText.charAt(charIndex);
-              charIndex++;
-            } else {
-              clearInterval(typingInterval);
-              full.classList.remove('typing');
-              full.classList.add('typed');
-            }
-          }, 8); // Very fast - 8 milliseconds per character
-
-          // Update button text and icon
-          const icon = btn.querySelector('i');
-          if (icon) {
-            icon.className = 'fas fa-chevron-down';
-          }
-          const textNode = Array.from(btn.childNodes).find(node => node.nodeType === 3);
-          if (textNode) {
-            textNode.textContent = ' READ LESS';
-          }
-          
-          isExpanded = true;
-        } else {
-          // Collapse: Show preview
-          if (typingInterval) {
-            clearInterval(typingInterval);
-          }
-          full.classList.remove('typing', 'typed');
-          full.style.display = 'none';
-          preview.style.display = 'block';
-          
-          // Update button text and icon
-          const icon = btn.querySelector('i');
-          if (icon) {
-            icon.className = 'fas fa-chevron-right';
-          }
-          const textNode = Array.from(btn.childNodes).find(node => node.nodeType === 3);
-          if (textNode) {
-            textNode.textContent = ' READ MORE';
-          }
-          
-          isExpanded = false;
+      if (!isExpanded) {
+        // Expand: Show full text with fast typewriter effect
+        preview.style.display = 'none';
+        preview.style.visibility = 'hidden';
+        
+        // Store the original text if not already stored
+        if (!expandableText.dataset.fullText) {
+          expandableText.dataset.fullText = full.textContent;
         }
-      });
+        const fullText = expandableText.dataset.fullText;
+        
+        full.textContent = '';
+        full.classList.add('typing');
+        full.style.display = 'block';
+        full.style.visibility = 'visible';
+        
+        // Fast typewriter effect (8ms per character)
+        let charIndex = 0;
+        const typingInterval = setInterval(() => {
+          if (charIndex < fullText.length) {
+            full.textContent += fullText.charAt(charIndex);
+            charIndex++;
+          } else {
+            clearInterval(typingInterval);
+            full.classList.remove('typing');
+            full.classList.add('typed');
+          }
+        }, 8); // Very fast - 8 milliseconds per character
+
+        // Store interval ID to clear if needed
+        expandableText.dataset.typingInterval = typingInterval;
+
+        // Update button text and icon
+        const icon = btn.querySelector('i');
+        if (icon) {
+          icon.className = 'fas fa-chevron-down';
+        }
+        const textNode = Array.from(btn.childNodes).find(node => node.nodeType === 3);
+        if (textNode) {
+          textNode.textContent = ' READ LESS';
+        }
+      } else {
+        // Collapse: Show preview
+        const typingInterval = expandableText.dataset.typingInterval;
+        if (typingInterval) {
+          clearInterval(parseInt(typingInterval));
+          delete expandableText.dataset.typingInterval;
+        }
+        
+        full.classList.remove('typing', 'typed');
+        full.style.display = 'none';
+        full.style.visibility = 'hidden';
+        preview.style.display = 'inline';
+        preview.style.visibility = 'visible';
+        
+        // Update button text and icon
+        const icon = btn.querySelector('i');
+        if (icon) {
+          icon.className = 'fas fa-chevron-right';
+        }
+        const textNode = Array.from(btn.childNodes).find(node => node.nodeType === 3);
+        if (textNode) {
+          textNode.textContent = ' READ MORE';
+        }
+      }
     });
   }
 
@@ -545,31 +565,284 @@
   });
 
   // ================================
+  // AUTO BLOG GENERATION FROM MARKDOWN
+  // ================================
+
+  async function initAutoBlogGeneration() {
+    // List of blog post files to load (add new posts here)
+    // Or fetch from a blog-index.json file for full automation
+    const blogPosts = [
+      '10k-downloads.md',
+      '3d-modeling-basics.md',
+      // Add more posts here, or load from blog-index.json
+    ];
+
+    const blogTimeline = document.querySelector('.blog-timeline');
+    if (!blogTimeline) return;
+
+    // Check if we're using file:// protocol
+    if (window.location.protocol === 'file:') {
+      console.warn('⚠️ BLOG SYSTEM WARNING:');
+      console.warn('You are viewing this page using the file:// protocol.');
+      console.warn('Blog posts cannot load due to CORS restrictions.');
+      console.warn('');
+      console.warn('SOLUTION: Use a local web server instead:');
+      console.warn('  • Python: python -m http.server 8000');
+      console.warn('  • Node.js: npx serve');
+      console.warn('  • PHP: php -S localhost:8000');
+      console.warn('');
+      console.warn('Then open: http://localhost:8000');
+      
+      // Show a user-friendly message in the timeline
+      blogTimeline.innerHTML = `
+        <div style="text-align: center; padding: 3rem; max-width: 600px; margin: 0 auto;">
+          <div style="font-size: 4rem; margin-bottom: 1rem;">⚠️</div>
+          <h2 style="color: var(--color-accent); margin-bottom: 1rem;">Local Server Required</h2>
+          <p style="color: var(--color-text-dim); margin-bottom: 2rem;">
+            Blog posts cannot load when opening HTML files directly (file:// protocol).
+            This is a browser security restriction.
+          </p>
+          <div style="background: rgba(76, 194, 255, 0.1); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+            <h3 style="color: var(--color-accent); margin-bottom: 1rem;">Quick Fix:</h3>
+            <p style="color: var(--color-text); font-family: 'IBM Plex Mono', monospace; margin-bottom: 0.5rem;">
+              <strong>Python:</strong> python -m http.server 8000
+            </p>
+            <p style="color: var(--color-text); font-family: 'IBM Plex Mono', monospace; margin-bottom: 0.5rem;">
+              <strong>Node.js:</strong> npx serve
+            </p>
+            <p style="color: var(--color-text); font-family: 'IBM Plex Mono', monospace;">
+              <strong>PHP:</strong> php -S localhost:8000
+            </p>
+          </div>
+          <p style="color: var(--color-text-muted); font-size: 0.9rem;">
+            Then open <code style="background: rgba(255,255,255,0.1); padding: 0.2rem 0.5rem; border-radius: 4px;">http://localhost:8000</code> in your browser
+          </p>
+        </div>
+      `;
+      return; // Exit early
+    }
+
+    // Check if there's a blog-index.json file for automatic discovery
+    try {
+      const indexResponse = await fetch('blog/blog-index.json');
+      if (indexResponse.ok) {
+        const index = await indexResponse.json();
+        blogPosts.length = 0; // Clear default list
+        blogPosts.push(...index.posts);
+      }
+    } catch (e) {
+      console.log('No blog-index.json found, using manual list');
+    }
+
+    // Clear existing timeline (keep the line)
+    const timelineLine = blogTimeline.querySelector('.timeline-line');
+    blogTimeline.innerHTML = '';
+    if (timelineLine) {
+      blogTimeline.appendChild(timelineLine);
+    }
+
+    let postIndex = 0;
+    for (const postFile of blogPosts) {
+      try {
+        const postId = postFile.replace('.md', '');
+        const response = await fetch(`blog/posts/${postFile}`);
+        
+        if (!response.ok) continue;
+        
+        const content = await response.text();
+        const metadata = parseYAMLFrontmatter(content);
+        
+        // Generate blog card from metadata
+        const blogCard = createBlogCard(metadata, postId, postIndex);
+        blogTimeline.appendChild(blogCard);
+        
+        postIndex++;
+      } catch (error) {
+        console.error(`Error loading blog post ${postFile}:`, error);
+      }
+    }
+
+    console.log(`✓ Loaded ${postIndex} blog posts`);
+  }
+
+  // Parse YAML frontmatter from markdown
+  function parseYAMLFrontmatter(content) {
+    const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
+    const match = content.match(frontmatterRegex);
+    
+    if (!match) {
+      // No frontmatter, extract from content
+      return extractMetadataFromContent(content);
+    }
+
+    const yamlText = match[1];
+    const markdownContent = match[2];
+    
+    const metadata = {};
+    const lines = yamlText.split('\n');
+    
+    for (const line of lines) {
+      const colonIndex = line.indexOf(':');
+      if (colonIndex === -1) continue;
+      
+      const key = line.substring(0, colonIndex).trim();
+      let value = line.substring(colonIndex + 1).trim();
+      
+      // Remove quotes if present
+      if ((value.startsWith('"') && value.endsWith('"')) || 
+          (value.startsWith("'") && value.endsWith("'"))) {
+        value = value.substring(1, value.length - 1);
+      }
+      
+      // Parse arrays (tags)
+      if (value.startsWith('[') && value.endsWith(']')) {
+        value = value.substring(1, value.length - 1)
+          .split(',')
+          .map(v => v.trim().replace(/['"]/g, ''));
+      }
+      
+      metadata[key] = value;
+    }
+    
+    // Add markdown content
+    metadata.content = markdownContent;
+    
+    return metadata;
+  }
+
+  // Extract metadata from content if no frontmatter
+  function extractMetadataFromContent(content) {
+    const lines = content.split('\n');
+    const metadata = {
+      title: 'Untitled Post',
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      description: '',
+      tags: [],
+      category: 'General',
+      image: 'fas fa-blog',
+      readTime: '5 min read',
+      content: content
+    };
+    
+    // Extract title from first heading
+    for (const line of lines) {
+      if (line.startsWith('# ')) {
+        metadata.title = line.substring(2).trim();
+        break;
+      }
+    }
+    
+    // Extract description from first paragraph
+    const paragraphs = content.split('\n\n');
+    for (const para of paragraphs) {
+      if (para.trim() && !para.startsWith('#')) {
+        metadata.description = para.trim().substring(0, 150) + '...';
+        break;
+      }
+    }
+    
+    // Extract tags from end of document
+    const tagsMatch = content.match(/\*\*Tags:\*\*\s*(.+)/i);
+    if (tagsMatch) {
+      metadata.tags = tagsMatch[1].split(',').map(t => t.trim());
+    }
+    
+    // Estimate read time
+    const wordCount = content.split(/\s+/).length;
+    const readMinutes = Math.ceil(wordCount / 200);
+    metadata.readTime = `${readMinutes} min read`;
+    
+    return metadata;
+  }
+
+  // Create blog card element from metadata
+  function createBlogCard(metadata, postId, index) {
+    const article = document.createElement('article');
+    article.className = `blog-post ${index % 2 === 0 ? 'blog-post--left' : 'blog-post--right'}`;
+    article.setAttribute('data-post', index + 1);
+    
+    // Determine icon based on category or default
+    const iconClass = metadata.icon || metadata.image || 'fas fa-blog';
+    const statusLabel = metadata.status || metadata.category || 'POST';
+    
+    article.innerHTML = `
+      <div class="timeline-dot"></div>
+      <div class="dashboard-card card-3d blog-card">
+        <div class="blog-thumbnail">
+          <div class="thumbnail-placeholder"><i class="${iconClass}"></i></div>
+          <div class="blog-status"><i class="fas fa-circle"></i> ${statusLabel.toUpperCase()}</div>
+        </div>
+        <div class="blog-card-header">
+          <span class="card-date"><i class="far fa-calendar"></i> ${metadata.date || 'RECENT'}</span>
+          <h3>${metadata.title || 'Untitled Post'}</h3>
+        </div>
+        <div class="card-body">
+          <p>${metadata.description || metadata.excerpt || 'Click to read the full post...'}</p>
+          ${metadata.tags && metadata.tags.length > 0 ? `
+          <div class="blog-tags">
+            ${metadata.tags.map(tag => `<span class="tag"><i class="fas fa-tag"></i> ${tag}</span>`).join('')}
+          </div>
+          ` : ''}
+        </div>
+        <div class="card-footer">
+          <a class="card-link read-full-post" href="#" data-post-id="${postId}"><i class="fas fa-arrow-right"></i> READ FULL POST</a>
+          <span class="read-time"><i class="far fa-clock"></i> ${metadata.readTime || '5 min read'}</span>
+        </div>
+      </div>
+    `;
+    
+    return article;
+  }
+
+  // ================================
   // BLOG POST VIEWER (Markdown Support)
   // ================================
 
   function initBlogPostViewer() {
-    const readFullPostLinks = document.querySelectorAll('.read-full-post');
     const fullPostSection = document.getElementById('fullpost');
     const postContent = document.getElementById('postContent');
     const postDate = document.getElementById('postDate');
     const postReadtime = document.getElementById('postReadtime');
     const fullPostTab = document.getElementById('fullPostTab');
 
-    readFullPostLinks.forEach(link => {
-      link.addEventListener('click', function(e) {
+    // Use event delegation for dynamically generated blog cards
+    document.addEventListener('click', function(e) {
+      const link = e.target.closest('.read-full-post');
+      if (link) {
         e.preventDefault();
-        const postId = this.dataset.postId;
+        const postId = link.dataset.postId;
         loadBlogPost(postId);
-      });
+      }
     });
 
     async function loadBlogPost(postId) {
+      // Hide blog section and show full post section
+      const blogSection = document.getElementById('blog');
+      const fullPostSection = document.getElementById('fullpost');
+      
+      if (blogSection) {
+        blogSection.classList.remove('active');
+        blogSection.style.display = 'none';
+      }
+      
+      if (fullPostSection) {
+        fullPostSection.style.display = 'block';
+        setTimeout(() => {
+          fullPostSection.classList.add('active');
+        }, 10);
+      }
+      
+      // Update nav tabs (hide blog, show back button if needed)
+      const blogTab = document.querySelector('[data-section="blog"]');
+      const fullPostTab = document.getElementById('fullPostTab');
+      if (blogTab) blogTab.classList.remove('active');
+      if (fullPostTab) fullPostTab.classList.add('active');
+      
       // Show loading
       postContent.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> Loading post...</div>';
       
-      // Switch to full post section
-      document.querySelector('[data-section="fullpost"]').click();
+      // Scroll to top immediately
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       
       try {
         // Try to load markdown file
@@ -581,13 +854,16 @@
         
         const markdown = await response.text();
         
+        // Strip YAML frontmatter before rendering
+        const markdownWithoutFrontmatter = markdown.replace(/^---\s*\n[\s\S]*?\n---\s*\n/, '');
+        
         // Parse markdown to HTML using marked.js
         if (typeof marked !== 'undefined') {
-          const html = marked.parse(markdown);
+          const html = marked.parse(markdownWithoutFrontmatter);
           postContent.innerHTML = html;
         } else {
           // Fallback: display as plain text with basic formatting
-          postContent.innerHTML = `<pre>${markdown}</pre>`;
+          postContent.innerHTML = `<pre>${markdownWithoutFrontmatter}</pre>`;
         }
         
         // Extract and display metadata from blog card
@@ -604,8 +880,10 @@
           }
         }
         
-        // Scroll to top
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Scroll to top again after content loads
+        setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 100);
         
       } catch (error) {
         console.error('Error loading blog post:', error);
@@ -615,7 +893,7 @@
             <h2>Post Not Found</h2>
             <p style="color: var(--color-text-dim); margin: 1rem 0;">The blog post file <code>blog/posts/${postId}.md</code> could not be loaded.</p>
             <p style="color: var(--color-text-muted); font-size: 0.9rem;">Create a markdown file at this location to display the full post.</p>
-            <button class="back-to-blog-btn" onclick="document.querySelector('[data-section=blog]').click()" style="margin-top: 2rem;">
+            <button class="back-to-blog-btn" style="margin-top: 2rem; padding: 0.8rem 1.5rem; background: var(--color-accent); color: var(--color-bg); border: none; border-radius: 4px; cursor: pointer;">
               <i class="fas fa-arrow-left"></i> Back to Blog
             </button>
           </div>
@@ -623,12 +901,40 @@
       }
     }
 
-    // Make "Back to Blog" tab functional
-    if (fullPostTab) {
-      fullPostTab.addEventListener('click', function() {
-        document.querySelector('[data-section="blog"]').click();
-      });
-    }
+    // Make "Back to Blog" button functional
+    document.addEventListener('click', function(e) {
+      if (e.target.closest('.back-to-blog-btn') || e.target.closest('#fullPostTab')) {
+        e.preventDefault();
+        
+        // Hide fullpost section
+        const fullPostSection = document.getElementById('fullpost');
+        const blogSection = document.getElementById('blog');
+        
+        if (fullPostSection) {
+          fullPostSection.classList.remove('active');
+          setTimeout(() => {
+            fullPostSection.style.display = 'none';
+          }, 300);
+        }
+        
+        // Show blog section
+        if (blogSection) {
+          blogSection.style.display = 'block';
+          setTimeout(() => {
+            blogSection.classList.add('active');
+          }, 10);
+        }
+        
+        // Update nav tabs
+        const blogTab = document.querySelector('[data-section="blog"]');
+        const fullPostTab = document.getElementById('fullPostTab');
+        if (blogTab) blogTab.classList.add('active');
+        if (fullPostTab) fullPostTab.classList.remove('active');
+        
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
   }
 
   // ================================
