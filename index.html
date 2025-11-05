@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Tech-driven maker profile, interactive dashboard, and asset store" />
+    <title>Tech Creator Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="assets/css/dashboard.css" />
+    <!-- Markdown parser -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  </head>
+  <body class="dashboard-body">
+    <!-- 3D Canvas Background -->
+    <canvas id="bg-canvas" class="bg-canvas"></canvas>
+    
+    <!-- Animated Backdrop -->
+    <div class="profile-backdrop" aria-hidden="true">
+      <div class="backdrop-orb backdrop-orb--primary"></div>
+      <div class="backdrop-orb backdrop-orb--accent"></div>
+      <div class="backdrop-grid"></div>
+      <div class="dotted-overlay"></div>
+    </div>
+
+    <!-- Dashboard Header -->
+    <header class="dashboard-header">
+      <div class="dashboard-shell">
+        <a class="profile-brand" href="#profile">
+          <span class="brand-mark"><i class="fas fa-code"></i></span>
+          <span class="brand-text">Plu101</span>
+        </a>
+        <nav class="dashboard-nav" aria-label="Dashboard navigation">
+          <button class="nav-tab active" data-section="profile"><i class="fas fa-user"></i> Profile</button>
+          <button class="nav-tab" data-section="projects"><i class="fas fa-folder-open"></i> Projects</button>
+          <button class="nav-tab" data-section="store"><i class="fas fa-store"></i> Store</button>
+          <button class="nav-tab" data-section="blog"><i class="fas fa-blog"></i> Blog</button>
+          <button class="nav-tab" data-section="support"><i class="fas fa-heart"></i> Support</button>
+          <button class="nav-tab nav-tab--hidden" data-section="fullpost" id="fullPostTab" style="display: none;">
+            <i class="fas fa-arrow-left"></i> Back to Blog
+          </button>
+        </nav>
+        <div class="header-widgets">
+          <div class="widget widget--stats">
+            <span class="widget-icon"><i class="fas fa-arrow-up"></i></span>
+            <span class="widget-value">10k+</span>
+          </div>
+          <div class="widget widget--pulse">
+            <span class="pulse-dot"></span>
+            <span class="widget-text">LIVE</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-main">
+      <!-- Profile Section -->
+      <section id="profile" class="dashboard-section active">
+        <div class="dashboard-shell">
+          <div class="section-title">
+            <h1 class="glitch-text" data-text="PLU101 PORTFOLIO">PLU101 PORTFOLIO</h1>
+            <p class="section-subtitle"><i class="fas fa-code"></i> Developer & Creator</p>
+          </div>
+
+          <div class="dashboard-grid profile-grid">
+            <!-- Main Profile Card -->
+            <article class="dashboard-card card-3d profile-main-card">
+              <div class="card-header">
+                <div class="card-icon"><i class="fas fa-user"></i></div>
+                <h2>ABOUT ME</h2>
+              </div>
+              <div class="card-body">
+                <p class="expandable-text" data-expanded="false">
+                  <span class="text-preview">Programmer and developer working on game mods, addons, and tools...</span>
+                  <span class="text-full" style="display: none;">Programmer and developer working on game mods, addons, and tools. I create content for Garry's Mod and other Source engine games, developing in Lua and C/C++. Experienced with most common programming languages including Perl. Currently exploring 3D modeling and 2D digital art to expand my creative skillset. I have a strong interest in engineering and mechanics, which complements my software development work.</span>
+                  <button class="read-more-btn" data-target="text-preview"><i class="fas fa-chevron-right"></i> READ MORE</button>
+                </p>
+                <div class="stats-row">
+                  <div class="stat-item">
+                    <div class="stat-icon"><i class="fas fa-download"></i></div>
+                    <div class="stat-content">
+                      <div class="stat-label">Downloads</div>
+                      <div class="stat-value" data-count="10000">0</div>
+                    </div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    <div class="stat-content">
+                      <div class="stat-label">Subscribers</div>
+                      <div class="stat-value" data-count="8000">0</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Skills Card -->
+            <article class="dashboard-card card-3d skills-card">
+              <div class="card-header">
+                <div class="card-icon"><i class="fas fa-tools"></i></div>
+                <h2>WHAT I DO</h2>
+              </div>
+              <div class="card-body">
+                <div class="skill-list">
+                  <div class="skill-item">
+                    <div class="skill-icon"><i class="fas fa-gamepad"></i></div>
+                    <div class="skill-content">
+                      <strong>Game Modding</strong>
+                      <p>Garry's Mod addons and Source engine modifications in Lua and C/C++</p>
+                    </div>
+                  </div>
+                  <div class="skill-item">
+                    <div class="skill-icon"><i class="fas fa-code"></i></div>
+                    <div class="skill-content">
+                      <strong>Programming</strong>
+                      <p>Multi-language development including common languages and Perl</p>
+                    </div>
+                  </div>
+                  <div class="skill-item">
+                    <div class="skill-icon"><i class="fas fa-cube"></i></div>
+                    <div class="skill-content">
+                      <strong>Content Creation</strong>
+                      <p>Learning 3D modeling and 2D digital art for game assets</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Tech Stack Card -->
+            <article class="dashboard-card card-3d tech-card">
+              <div class="card-header">
+                <div class="card-icon"><i class="fas fa-layer-group"></i></div>
+                <h2>TECH STACK</h2>
+              </div>
+              <div class="card-body">
+                <div class="tech-grid">
+                  <span class="tech-badge"><i class="fas fa-code"></i> Lua</span>
+                  <span class="tech-badge"><i class="fas fa-code"></i> C/C++</span>
+                  <span class="tech-badge"><i class="fas fa-code"></i> Python</span>
+                  <span class="tech-badge"><i class="fas fa-code"></i> JavaScript</span>
+                  <span class="tech-badge"><i class="fas fa-code"></i> Perl</span>
+                  <span class="tech-badge"><i class="fas fa-gamepad"></i> Source Engine</span>
+                  <span class="tech-badge"><i class="fas fa-cube"></i> Unreal Engine</span>
+                  <span class="tech-badge"><i class="fab fa-github"></i> Git</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Interests Card -->
+            <article class="dashboard-card card-3d interests-card">
+              <div class="card-header">
+                <div class="card-icon"><i class="fas fa-star"></i></div>
+                <h2>INTERESTS</h2>
+              </div>
+              <div class="card-body">
+                <div class="interest-list">
+                  <div class="interest-item">
+                    <i class="fas fa-cogs"></i>
+                    <span>Engineering & Mechanics</span>
+                  </div>
+                  <div class="interest-item">
+                    <i class="fas fa-paint-brush"></i>
+                    <span>3D Modeling (Learning)</span>
+                  </div>
+                  <div class="interest-item">
+                    <i class="fas fa-palette"></i>
+                    <span>2D Digital Art (Learning)</span>
+                  </div>
+                  <div class="interest-item">
+                    <i class="fas fa-wrench"></i>
+                    <span>Tool Development</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects Section -->
+      <section id="projects" class="dashboard-section">
+        <div class="dashboard-shell">
+          <div class="section-title">
+            <h1>FEATURED PROJECTS</h1>
+            <p class="section-subtitle"><i class="fas fa-folder-open"></i> Personal projects and contributions</p>
+          </div>
+
+          <div class="dashboard-grid projects-grid">
+            <article class="dashboard-card card-3d project-card">
+              <div class="project-thumbnail">
+                <div class="thumbnail-placeholder"><i class="fas fa-cube"></i></div>
+                <div class="project-status"><i class="fas fa-circle"></i> ACTIVE</div>
+              </div>
+              <div class="card-header">
+                <span class="card-eyebrow"><i class="fas fa-chevron-right"></i> 3D CREATOR</span>
+                <h3>Browser Modeling Tool</h3>
+              </div>
+              <div class="card-body">
+                <p class="expandable-text" data-expanded="false">
+                  <span class="text-preview">React + Three.js browser-based 3D editor...</span>
+                  <span class="text-full" style="display: none;">React + Three.js browser-based 3D editor with procedural modifiers and export capabilities (GLTF/OBJ/STL). Features real-time preview and transform controls for quick 3D prototyping.</span>
+                  <button class="read-more-btn" data-target="text-preview"><i class="fas fa-chevron-right"></i> READ MORE</button>
+                </p>
+                <div class="project-tags">
+                  <span>React</span>
+                  <span>Three.js</span>
+                  <span>WebGL</span>
+                </div>
+              </div>
+              <div class="card-footer">
+                <a class="card-link" href="../3dCreator/index.html" target="_blank"><i class="fas fa-external-link-alt"></i> OPEN DEMO</a>
+                <span class="card-year">2025</span>
+              </div>
+            </article>
+
+            <article class="dashboard-card card-3d project-card">
+              <div class="project-thumbnail">
+                <div class="thumbnail-placeholder"><i class="fas fa-gamepad"></i></div>
+                <div class="project-status"><i class="fas fa-circle"></i> ACTIVE</div>
+              </div>
+              <div class="card-header">
+                <span class="card-eyebrow"><i class="fas fa-chevron-right"></i> WORKSHOP ADDON</span>
+                <h3>Garry's Mod Content</h3>
+              </div>
+              <div class="card-body">
+                <p class="expandable-text" data-expanded="false">
+                  <span class="text-preview">Popular GMod addon with 10k+ downloads and 8k subscribers...</span>
+                  <span class="text-full" style="display: none;">Popular GMod addon with 10k+ downloads and 8k subscribers. Gameplay extension developed in Lua with optimized performance and visual effects. Features custom mechanics and seamless integration with the Source engine.</span>
+                  <button class="read-more-btn" data-target="text-preview"><i class="fas fa-chevron-right"></i> READ MORE</button>
+                </p>
+                <div class="project-tags">
+                  <span>Lua</span>
+                  <span>Source Engine</span>
+                  <span>Workshop</span>
+                </div>
+              </div>
+              <div class="card-footer">
+                <a class="card-link" href="https://steamcommunity.com/workshop/" target="_blank"><i class="fas fa-external-link-alt"></i> VIEW WORKSHOP</a>
+                <span class="card-year">2022</span>
+              </div>
+            </article>
+
+            <article class="dashboard-card card-3d project-card">
+              <div class="project-thumbnail">
+                <div class="thumbnail-placeholder"><i class="fas fa-terminal"></i></div>
+                <div class="project-status"><i class="fas fa-circle"></i> STABLE</div>
+              </div>
+              <div class="card-header">
+                <span class="card-eyebrow"><i class="fas fa-chevron-right"></i> CLI TOOL</span>
+                <h3>Ch4os Engine</h3>
+              </div>
+              <div class="card-body">
+                <p class="expandable-text" data-expanded="false">
+                  <span class="text-preview">Python command-line toolkit for automation...</span>
+                  <span class="text-full" style="display: none;">Python command-line toolkit for automation and information lookup. Integrates with Wolfram|Alpha and Wikipedia for quick research. Includes various helper utilities for development workflows.</span>
+                  <button class="read-more-btn" data-target="text-preview"><i class="fas fa-chevron-right"></i> READ MORE</button>
+                </p>
+                <div class="project-tags">
+                  <span>Python</span>
+                  <span>CLI</span>
+                  <span>Automation</span>
+                </div>
+              </div>
+              <div class="card-footer">
+                <a class="card-link" href="../ch4os_ai/ch4os_engine.py" target="_blank"><i class="fas fa-external-link-alt"></i> VIEW SOURCE</a>
+                <span class="card-year">2023</span>
+              </div>
+            </article>
+
+            <article class="dashboard-card card-3d project-card">
+              <div class="project-thumbnail">
+                <div class="thumbnail-placeholder"><i class="fas fa-volume-up"></i></div>
+                <div class="project-status"><i class="fas fa-circle"></i> RELEASED</div>
+              </div>
+              <div class="card-header">
+                <span class="card-eyebrow"><i class="fas fa-chevron-right"></i> AUDIO PACK</span>
+                <h3>Backpack SFX Bundle</h3>
+              </div>
+              <div class="card-body">
+                <p class="expandable-text" data-expanded="false">
+                  <span class="text-preview">Sound effects library for Unreal Engine...</span>
+                  <span class="text-full" style="display: none;">Sound effects library for Unreal Engine with 112 audio cues. Includes gear handling sounds and inventory interactions with multiple variations. Ready for integration into adventure and RPG titles.</span>
+                  <button class="read-more-btn" data-target="text-preview"><i class="fas fa-chevron-right"></i> READ MORE</button>
+                </p>
+                <div class="project-tags">
+                  <span>Unreal Engine</span>
+                  <span>Sound Design</span>
+                  <span>Foley</span>
+                </div>
+              </div>
+              <div class="card-footer">
+                <a class="card-link" href="../BackpackSFXBundle/AssetStore.uproject" target="_blank"><i class="fas fa-external-link-alt"></i> PROJECT FILE</a>
+                <span class="card-year">2024</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Store Section -->
+      <section id="store" class="dashboard-section">
+        <div class="dashboard-shell">
+          <div class="section-title">
+            <h1>ASSET STORE</h1>
+            <p class="section-subtitle"><i class="fas fa-store"></i> Unreal Engine assets and packs</p>
+          </div>
+
+          <div class="store-showcase">
+            <!-- 3D Rotating Store Display -->
+            <div class="store-display-3d">
+              <div class="display-container" id="storeDisplay">
+                <div class="display-item" data-item="1">
+                  <div class="item-cube">
+                    <div class="cube-face front"><i class="fas fa-box"></i></div>
+                    <div class="cube-face back"><i class="fas fa-box"></i></div>
+                    <div class="cube-face right"><i class="fas fa-box"></i></div>
+                    <div class="cube-face left"><i class="fas fa-box"></i></div>
+                    <div class="cube-face top"><i class="fas fa-box"></i></div>
+                    <div class="cube-face bottom"><i class="fas fa-box"></i></div>
+                  </div>
+                  <div class="item-label">ASSET PACKS</div>
+                </div>
+                <div class="display-item" data-item="2">
+                  <div class="item-cube">
+                    <div class="cube-face front"><i class="fas fa-cube"></i></div>
+                    <div class="cube-face back"><i class="fas fa-cube"></i></div>
+                    <div class="cube-face right"><i class="fas fa-cube"></i></div>
+                    <div class="cube-face left"><i class="fas fa-cube"></i></div>
+                    <div class="cube-face top"><i class="fas fa-cube"></i></div>
+                    <div class="cube-face bottom"><i class="fas fa-cube"></i></div>
+                  </div>
+                  <div class="item-label">3D MODELS</div>
+                </div>
+                <div class="display-item" data-item="3">
+                  <div class="item-cube">
+                    <div class="cube-face front"><i class="fas fa-volume-up"></i></div>
+                    <div class="cube-face back"><i class="fas fa-volume-up"></i></div>
+                    <div class="cube-face right"><i class="fas fa-volume-up"></i></div>
+                    <div class="cube-face left"><i class="fas fa-volume-up"></i></div>
+                    <div class="cube-face top"><i class="fas fa-volume-up"></i></div>
+                    <div class="cube-face bottom"><i class="fas fa-volume-up"></i></div>
+                  </div>
+                  <div class="item-label">SOUND FX</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Store Cards Grid -->
+            <div class="dashboard-grid store-grid">
+              <article class="dashboard-card card-3d store-main-card">
+                <div class="card-header">
+                  <div class="card-icon"><i class="fas fa-store"></i></div>
+                  <h2>UNREAL MARKETPLACE</h2>
+                  <div class="card-badge"><i class="fas fa-star"></i> AVAILABLE</div>
+                </div>
+                <div class="card-body">
+                  <p class="shop-tagline">Quality assets for Unreal Engine development</p>
+                  <ul class="shop-features">
+                    <li>
+                      <span class="feature-icon"><i class="fas fa-check"></i></span>
+                      Optimized 3D models and meshes
+                    </li>
+                    <li>
+                      <span class="feature-icon"><i class="fas fa-check"></i></span>
+                      High-quality sound effects and cues
+                    </li>
+                    <li>
+                      <span class="feature-icon"><i class="fas fa-check"></i></span>
+                      Ready-to-use asset packs
+                    </li>
+                    <li>
+                      <span class="feature-icon"><i class="fas fa-check"></i></span>
+                      Documentation included
+                    </li>
+                  </ul>
+                  <div class="shop-actions">
+                    <a class="btn-primary" href="https://www.unrealengine.com/marketplace" target="_blank">
+                      <span class="btn-icon"><i class="fas fa-external-link-alt"></i></span>
+                      BROWSE MARKETPLACE
+                    </a>
+                    <a class="btn-secondary" href="mailto:maker@protonmail.com">
+                      <span class="btn-icon"><i class="fas fa-envelope"></i></span>
+                      CUSTOM REQUESTS
+                    </a>
+                  </div>
+                </div>
+              </article>
+
+              <article class="dashboard-card card-3d store-upcoming-card">
+                <div class="card-header">
+                  <div class="card-icon"><i class="fas fa-clock"></i></div>
+                  <h2>IN DEVELOPMENT</h2>
+                  <div class="card-badge"><i class="fas fa-tools"></i> WIP</div>
+                </div>
+                <div class="card-body">
+                  <h3>Future Asset Packs</h3>
+                  <p class="expandable-text" data-expanded="false">
+                    <span class="text-preview">Expanding the asset library with new packs...</span>
+                    <span class="text-full" style="display: none;">Expanding the asset library with new packs for Unreal Engine. Planning various themed asset collections including environment pieces, character accessories, and audio libraries. More content coming as I develop my 3D modeling and digital art skills.</span>
+                    <button class="read-more-btn" data-target="text-preview"><i class="fas fa-chevron-right"></i> READ MORE</button>
+                  </p>
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 35%"></div>
+                    <span class="progress-text">35% COMPLETE</span>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Blog Section -->
+      <section id="blog" class="dashboard-section">
+        <div class="dashboard-shell">
+          <div class="section-title">
+            <h1>DEVLOG & UPDATES</h1>
+            <p class="section-subtitle"><i class="fas fa-blog"></i> Development notes and project updates</p>
+          </div>
+
+          <div class="blog-timeline">
+            <!-- Timeline Line -->
+            <div class="timeline-line"></div>
+
+            <!-- Blog Post 1 -->
+            <article class="blog-post blog-post--left" data-post="1">
+              <div class="timeline-dot"></div>
+              <div class="dashboard-card card-3d blog-card">
+                <div class="blog-thumbnail">
+                  <div class="thumbnail-placeholder"><i class="fas fa-trophy"></i></div>
+                  <div class="blog-status"><i class="fas fa-circle"></i> MILESTONE</div>
+                </div>
+                <div class="card-header">
+                  <span class="card-date"><i class="far fa-calendar"></i> NOV 4, 2025</span>
+                  <h3>Reaching 10k Downloads</h3>
+                </div>
+                <div class="card-body">
+                  <p class="expandable-text" data-expanded="false">
+                    <span class="text-preview">Lessons learned from reaching 10,000 downloads on my Garry's Mod addon...</span>
+                    <span class="text-full" style="display: none;">Lessons learned from reaching 10,000 downloads on my Garry's Mod addon. Good documentation and listening to community feedback made a huge difference. Regular updates and bug fixes keep users engaged.</span>
+                    <button class="read-more-btn" data-target="text-preview"><i class="fas fa-chevron-right"></i> READ MORE</button>
+                  </p>
+                  <div class="blog-tags">
+                    <span class="tag"><i class="fas fa-tag"></i> GMod</span>
+                    <span class="tag"><i class="fas fa-tag"></i> Lua</span>
+                    <span class="tag"><i class="fas fa-tag"></i> Community</span>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <a class="card-link read-full-post" href="#" data-post-id="10k-downloads"><i class="fas fa-arrow-right"></i> READ FULL POST</a>
+                  <span class="read-time"><i class="far fa-clock"></i> 5 min read</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Blog Post 2 -->
+            <article class="blog-post blog-post--right" data-post="2">
+              <div class="timeline-dot"></div>
+              <div class="dashboard-card card-3d blog-card">
+                <div class="blog-thumbnail">
+                  <div class="thumbnail-placeholder"><i class="fas fa-cube"></i></div>
+                  <div class="blog-status"><i class="fas fa-circle"></i> LEARNING</div>
+                </div>
+                <div class="card-header">
+                  <span class="card-date"><i class="far fa-calendar"></i> OCT 28, 2025</span>
+                  <h3>Learning 3D Modeling Basics</h3>
+                </div>
+                <div class="card-body">
+                  <p class="expandable-text" data-expanded="false">
+                    <span class="text-preview">Starting my journey into 3D modeling for game assets...</span>
+                    <span class="text-full" style="display: none;">Starting my journey into 3D modeling for game assets. Focusing on learning proper topology and UV mapping. Planning to create assets for Unreal Engine as I improve my skills.</span>
+                    <button class="read-more-btn" data-target="text-preview"><i class="fas fa-chevron-right"></i> READ MORE</button>
+                  </p>
+                  <div class="blog-tags">
+                    <span class="tag"><i class="fas fa-tag"></i> 3D Modeling</span>
+                    <span class="tag"><i class="fas fa-tag"></i> Learning</span>
+                    <span class="tag"><i class="fas fa-tag"></i> Unreal</span>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <a class="card-link read-full-post" href="#" data-post-id="3d-modeling-basics"><i class="fas fa-arrow-right"></i> READ FULL POST</a>
+                  <span class="read-time"><i class="far fa-clock"></i> 4 min read</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Blog Post 3 -->
+            <article class="blog-post blog-post--left" data-post="3">
+              <div class="timeline-dot"></div>
+              <div class="dashboard-card card-3d blog-card">
+                <div class="blog-thumbnail">
+                  <div class="thumbnail-placeholder"><i class="fas fa-code"></i></div>
+                  <div class="blog-status"><i class="fas fa-circle"></i> PROJECT</div>
+                </div>
+                <div class="card-header">
+                  <span class="card-date"><i class="far fa-calendar"></i> OCT 15, 2025</span>
+                  <h3>Building a Three.js Editor</h3>
+                </div>
+                <div class="card-body">
+                  <p class="expandable-text" data-expanded="false">
+                    <span class="text-preview">Creating a browser-based 3D editor with React and Three.js...</span>
+                    <span class="text-full" style="display: none;">Creating a browser-based 3D editor with React and Three.js. Learning about real-time rendering, transform controls, and file export. Useful tool for quick prototyping.</span>
+                    <button class="read-more-btn" data-target="text-preview"><i class="fas fa-chevron-right"></i> READ MORE</button>
+                  </p>
+                  <div class="blog-tags">
+                    <span class="tag"><i class="fas fa-tag"></i> React</span>
+                    <span class="tag"><i class="fas fa-tag"></i> Three.js</span>
+                    <span class="tag"><i class="fas fa-tag"></i> WebGL</span>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <a class="card-link read-full-post" href="#" data-post-id="threejs-editor"><i class="fas fa-arrow-right"></i> READ FULL POST</a>
+                  <span class="read-time"><i class="far fa-clock"></i> 6 min read</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Blog Post 4 -->
+            <article class="blog-post blog-post--right" data-post="4">
+              <div class="timeline-dot"></div>
+              <div class="dashboard-card card-3d blog-card">
+                <div class="blog-thumbnail">
+                  <div class="thumbnail-placeholder"><i class="fas fa-tools"></i></div>
+                  <div class="blog-status"><i class="fas fa-circle"></i> TUTORIAL</div>
+                </div>
+                <div class="card-header">
+                  <span class="card-date"><i class="far fa-calendar"></i> OCT 1, 2025</span>
+                  <h3>C++ in GMod Development</h3>
+                </div>
+                <div class="card-body">
+                  <p class="expandable-text" data-expanded="false">
+                    <span class="text-preview">Deep dive into using C++ modules with Lua in Garry's Mod...</span>
+                    <span class="text-full" style="display: none;">Deep dive into using C++ modules with Lua in Garry's Mod. Performance optimization techniques and best practices for binary modules. How to properly interface between C++ and Lua code.</span>
+                    <button class="read-more-btn" data-target="text-preview"><i class="fas fa-chevron-right"></i> READ MORE</button>
+                  </p>
+                  <div class="blog-tags">
+                    <span class="tag"><i class="fas fa-tag"></i> C++</span>
+                    <span class="tag"><i class="fas fa-tag"></i> Lua</span>
+                    <span class="tag"><i class="fas fa-tag"></i> Performance</span>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <a class="card-link read-full-post" href="#" data-post-id="cpp-gmod"><i class="fas fa-arrow-right"></i> READ FULL POST</a>
+                  <span class="read-time"><i class="far fa-clock"></i> 8 min read</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Full Blog Post Section (Hidden) -->
+      <section id="fullpost" class="dashboard-section">
+        <div class="dashboard-shell">
+          <div class="fullpost-container">
+            <div class="fullpost-header">
+              <button class="back-to-blog-btn" onclick="document.querySelector('[data-section=blog]').click()">
+                <i class="fas fa-arrow-left"></i> Back to Blog
+              </button>
+              <div class="fullpost-meta">
+                <span class="fullpost-date" id="postDate"></span>
+                <span class="fullpost-readtime" id="postReadtime"></span>
+              </div>
+            </div>
+            <article class="fullpost-content markdown-content" id="postContent">
+              <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i> Loading post...
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Support Section -->
+      <section id="support" class="dashboard-section">
+        <div class="dashboard-shell">
+          <div class="section-title">
+            <h1>SUPPORT & CONNECT</h1>
+            <p class="section-subtitle"><i class="fas fa-heart"></i> Support development and get in touch</p>
+          </div>
+
+          <div class="support-container">
+            <article class="dashboard-card card-3d support-card">
+              <div class="card-header">
+                <div class="card-icon"><i class="fas fa-coffee"></i></div>
+                <h2>SUPPORT DEVELOPMENT</h2>
+              </div>
+              <div class="card-body">
+                <p class="expandable-text" data-expanded="false">
+                  <span class="text-preview">Support my work on mods, tools, and assets...</span>
+                  <span class="text-full" style="display: none;">Support my work on mods, tools, and assets. Your contributions help me dedicate more time to development and creating quality content. Supporters get early access to new releases and updates.</span>
+                  <button class="read-more-btn" data-target="text-preview"><i class="fas fa-chevron-right"></i> READ MORE</button>
+                </p>
+                
+                <div class="support-actions">
+                  <a class="btn-support btn-kofi" href="https://ko-fi.com" target="_blank">
+                    <div class="btn-support-icon"><i class="fas fa-coffee"></i></div>
+                    <div class="btn-support-content">
+                      <div class="btn-support-title">SUPPORT ON KO-FI</div>
+                      <div class="btn-support-subtitle"><i class="fas fa-heart"></i> One-time or monthly</div>
+                    </div>
+                  </a>
+                </div>
+
+                <div class="support-benefits">
+                  <h3><i class="fas fa-star"></i> SUPPORTER PERKS</h3>
+                  <ul>
+                    <li><i class="fas fa-check"></i> Early access to new releases</li>
+                    <li><i class="fas fa-check"></i> Development updates</li>
+                    <li><i class="fas fa-check"></i> Priority bug fixes</li>
+                    <li><i class="fas fa-check"></i> Feature requests</li>
+                  </ul>
+                </div>
+              </div>
+            </article>
+
+            <article class="dashboard-card card-3d contact-card">
+              <div class="card-header">
+                <div class="card-icon"><i class="fas fa-envelope"></i></div>
+                <h2>GET IN TOUCH</h2>
+              </div>
+              <div class="card-body">
+                <p>Available for collaborations and custom work. Feel free to reach out for questions about my projects.</p>
+                <div class="contact-methods">
+                  <a class="contact-method" href="mailto:maker@protonmail.com">
+                    <span class="method-icon"><i class="fas fa-envelope"></i></span>
+                    <span class="method-text">maker@protonmail.com</span>
+                  </a>
+                  <a class="contact-method" href="https://github.com/plu101" target="_blank">
+                    <span class="method-icon"><i class="fab fa-github"></i></span>
+                    <span class="method-text">GitHub - plu101</span>
+                  </a>
+                  <a class="contact-method" href="https://twitter.com" target="_blank">
+                    <span class="method-icon"><i class="fab fa-twitter"></i></span>
+                    <span class="method-text">Twitter</span>
+                  </a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="dashboard-footer">
+      <div class="dashboard-shell">
+        <p><i class="fas fa-code"></i> PLU101 - DEVELOPER & CREATOR</p>
+        <p class="footer-hint">Built with HTML, CSS, and JavaScript <i class="fas fa-heart"></i></p>
+      </div>
+    </footer>
+
+    <script src="assets/js/dashboard.js"></script>
+  </body>
+</html>
