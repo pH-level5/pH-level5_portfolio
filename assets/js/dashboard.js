@@ -13,7 +13,6 @@
   document.addEventListener('DOMContentLoaded', function() {
     initNavigation();
     initExpandableText();
-    init3DTilt();
     initCounters();
     initCanvasBackground();
     initScrollAnimations();
@@ -70,10 +69,24 @@
   }
 
   // ================================
-  // EXPANDABLE TEXT WITH TYPEWRITER (Fast Character-by-Character)
+  // EXPANDABLE TEXT WITH TYPEWRITER (Simplified)
   // ================================
 
+  const TYPING_SPEED = 25; // milliseconds per character
+  const TRUNCATE_LENGTH = 100; // characters to show in collapsed state
+
+  function truncateText(text) {
+    if (!text) return '';
+    if (text.length <= TRUNCATE_LENGTH) {
+      return text;
+    }
+    return text.substring(0, TRUNCATE_LENGTH).trimEnd() + '...';
+  }
+
   function initExpandableText() {
+    // Initialize all expandable text elements with truncated content
+    initializeTruncatedText();
+    
     // Use event delegation for dynamically generated content
     document.addEventListener('click', function(e) {
       const btn = e.target.closest('.read-more-btn');
@@ -85,91 +98,99 @@
       const expandableText = btn.closest('.expandable-text');
       if (!expandableText) return;
 
-      const preview = expandableText.querySelector('.text-preview');
-      const full = expandableText.querySelector('.text-full');
-      if (!preview || !full) return;
+      const textElement = expandableText.querySelector('.text-content');
+      if (!textElement) return;
 
-      // Check current state based on display (consider both inline style and computed style)
-      const fullDisplay = window.getComputedStyle(full).display;
-      const isExpanded = fullDisplay !== 'none';
+      // Store the full text on first interaction
+      if (!expandableText.dataset.fullText) {
+        expandableText.dataset.fullText = textElement.textContent.trim();
+      }
+      const fullText = expandableText.dataset.fullText;
+
+      // Check if currently expanded
+      const isExpanded = expandableText.getAttribute('data-expanded') === 'true';
 
       if (!isExpanded) {
-        // Expand: Show full text with fast typewriter effect
-        preview.style.display = 'none';
-        preview.style.visibility = 'hidden';
+        // EXPAND: Show full text with typing animation
+        expandableText.setAttribute('data-expanded', 'true');
         
-        // Store the original text if not already stored
-        if (!expandableText.dataset.fullText) {
-          expandableText.dataset.fullText = full.textContent;
+        // Clear text and start typing
+        textElement.textContent = '';
+        textElement.classList.add('typing');
+        
+        // Ensure any previous typing interval is cleared before starting
+        const activeInterval = expandableText.dataset.typingInterval;
+        if (activeInterval) {
+          clearInterval(parseInt(activeInterval, 10));
+          delete expandableText.dataset.typingInterval;
         }
-        const fullText = expandableText.dataset.fullText;
-        
-        full.textContent = '';
-        full.classList.add('typing');
-        full.style.display = 'block';
-        full.style.visibility = 'visible';
-        
-        // Fast typewriter effect (8ms per character)
+
+        // Typewriter effect
         let charIndex = 0;
         const typingInterval = setInterval(() => {
           if (charIndex < fullText.length) {
-            full.textContent += fullText.charAt(charIndex);
+            textElement.textContent += fullText.charAt(charIndex);
             charIndex++;
           } else {
             clearInterval(typingInterval);
-            full.classList.remove('typing');
-            full.classList.add('typed');
+            delete expandableText.dataset.typingInterval;
+            textElement.classList.remove('typing');
+            textElement.classList.add('typed');
           }
-        }, 8); // Very fast - 8 milliseconds per character
+        }, TYPING_SPEED);
 
         // Store interval ID to clear if needed
-        expandableText.dataset.typingInterval = typingInterval;
+        expandableText.dataset.typingInterval = typingInterval.toString();
 
-        // Update button text and icon
+        // Update button
         const icon = btn.querySelector('i');
-        if (icon) {
-          icon.className = 'fas fa-chevron-down';
-        }
+        if (icon) icon.className = 'fas fa-chevron-down';
         const textNode = Array.from(btn.childNodes).find(node => node.nodeType === 3);
-        if (textNode) {
-          textNode.textContent = ' READ LESS';
-        }
+        if (textNode) textNode.textContent = ' READ LESS';
+        
       } else {
-        // Collapse: Show preview
+        // COLLAPSE: Show truncated text
         const typingInterval = expandableText.dataset.typingInterval;
         if (typingInterval) {
-          clearInterval(parseInt(typingInterval));
+          clearInterval(parseInt(typingInterval, 10));
           delete expandableText.dataset.typingInterval;
         }
         
-        full.classList.remove('typing', 'typed');
-        full.style.display = 'none';
-        full.style.visibility = 'hidden';
-        preview.style.display = 'inline';
-        preview.style.visibility = 'visible';
+        expandableText.setAttribute('data-expanded', 'false');
+        textElement.classList.remove('typing', 'typed');
         
-        // Update button text and icon
+        // Restore truncated version
+        textElement.textContent = truncateText(fullText);
+
+        // Update button
         const icon = btn.querySelector('i');
-        if (icon) {
-          icon.className = 'fas fa-chevron-right';
-        }
+        if (icon) icon.className = 'fas fa-chevron-right';
         const textNode = Array.from(btn.childNodes).find(node => node.nodeType === 3);
-        if (textNode) {
-          textNode.textContent = ' READ MORE';
-        }
+        if (textNode) textNode.textContent = ' READ MORE';
       }
     });
   }
 
-  // ================================
-  // 3D TILT EFFECT ON CARDS (DISABLED)
-  // ================================
-
-  function init3DTilt() {
-    // 3D tilt effect disabled per user request
-    // Cards will still have hover effects via CSS
-    console.log('3D tilt disabled - using CSS hover effects instead');
+  // Helper function to initialize all text in truncated state
+  function initializeTruncatedText() {
+    const expandableTexts = document.querySelectorAll('.expandable-text');
+    
+    expandableTexts.forEach(expandableText => {
+      const textElement = expandableText.querySelector('.text-content');
+      if (!textElement) return;
+      
+      // Store full text
+      const fullText = textElement.textContent.trim();
+      expandableText.dataset.fullText = fullText;
+      
+      // Set initial truncated text
+      textElement.textContent = truncateText(fullText);
+      
+      // Ensure expanded state is false
+      expandableText.setAttribute('data-expanded', 'false');
+    });
   }
+
 
   // ================================
   // ANIMATED COUNTERS
@@ -257,7 +278,7 @@
       }
 
       draw() {
-        ctx.fillStyle = `rgba(76, 194, 255, ${this.opacity})`;
+        ctx.fillStyle = `rgba(119, 141, 169, ${this.opacity})`;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -285,7 +306,7 @@
           const distance = Math.sqrt(dx * dx + dy * dy);
 
           if (distance < 150) {
-            ctx.strokeStyle = `rgba(76, 194, 255, ${0.1 * (1 - distance / 150)})`;
+            ctx.strokeStyle = `rgba(119, 141, 169, ${0.1 * (1 - distance / 150)})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
@@ -347,25 +368,6 @@
     });
   }
 
-  // ================================
-  // KEYBOARD NAVIGATION
-  // ================================
-
-  document.addEventListener('keydown', function(e) {
-    const navTabs = Array.from(document.querySelectorAll('.nav-tab'));
-    const activeIndex = navTabs.findIndex(tab => tab.classList.contains('active'));
-
-    // Left/Right arrows for tab navigation
-    if (e.key === 'ArrowLeft') {
-      e.preventDefault();
-      const prevIndex = activeIndex > 0 ? activeIndex - 1 : navTabs.length - 1;
-      navTabs[prevIndex].click();
-    } else if (e.key === 'ArrowRight') {
-      e.preventDefault();
-      const nextIndex = activeIndex < navTabs.length - 1 ? activeIndex + 1 : 0;
-      navTabs[nextIndex].click();
-    }
-  });
 
   // ================================
   // STORE DISPLAY INTERACTION
@@ -524,7 +526,7 @@
       left: ${Math.random() * 100}vw;
       top: ${Math.random() * 100}vh;
       font-size: ${Math.random() * 3 + 1}rem;
-      color: rgba(76, 194, 255, ${Math.random() * 0.5 + 0.5});
+      color: rgba(119, 141, 169, ${Math.random() * 0.5 + 0.5});
       pointer-events: none;
       z-index: 9999;
       animation: float-away 3s ease-out forwards;
@@ -602,7 +604,7 @@
             Blog posts cannot load when opening HTML files directly (file:// protocol).
             This is a browser security restriction.
           </p>
-          <div style="background: rgba(76, 194, 255, 0.1); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+        <div style="background: rgba(119, 141, 169, 0.1); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
             <h3 style="color: var(--color-accent); margin-bottom: 1rem;">Quick Fix:</h3>
             <p style="color: var(--color-text); font-family: 'IBM Plex Mono', monospace; margin-bottom: 0.5rem;">
               <strong>Python:</strong> python -m http.server 8000
@@ -815,6 +817,48 @@
       }
     });
 
+    function applyDocumentPresentation(root) {
+      if (!root) return;
+
+      if (!root.classList.contains('document-body')) {
+        root.classList.add('document-body');
+      }
+
+      const title = root.querySelector('h1');
+      if (title) {
+        title.classList.add('document-title');
+      }
+
+      const leadParagraph = Array.from(root.querySelectorAll('p')).find(paragraph => paragraph.textContent.trim().length > 0);
+      if (leadParagraph) {
+        leadParagraph.classList.add('document-lead');
+      }
+
+      root.querySelectorAll('h2').forEach(heading => heading.classList.add('section-heading'));
+      root.querySelectorAll('h3').forEach(heading => heading.classList.add('subsection-heading'));
+      root.querySelectorAll('blockquote').forEach(block => block.classList.add('document-quote'));
+
+      root.querySelectorAll('table').forEach(table => {
+        if (!table.closest('.table-scroll')) {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'table-scroll';
+          table.parentNode.insertBefore(wrapper, table);
+          wrapper.appendChild(table);
+        }
+      });
+
+      root.querySelectorAll('figure').forEach(figure => figure.classList.add('document-figure'));
+
+      root.querySelectorAll('img').forEach(image => {
+        if (!image.hasAttribute('loading')) {
+          image.setAttribute('loading', 'lazy');
+        }
+        if (!image.hasAttribute('decoding')) {
+          image.setAttribute('decoding', 'async');
+        }
+      });
+    }
+
     async function loadBlogPost(postId) {
       // Hide blog section and show full post section
       const blogSection = document.getElementById('blog');
@@ -860,7 +904,14 @@
         // Parse markdown to HTML using marked.js
         if (typeof marked !== 'undefined') {
           const html = marked.parse(markdownWithoutFrontmatter);
-          postContent.innerHTML = html;
+          const documentBody = document.createElement('div');
+          documentBody.className = 'document-body';
+          documentBody.innerHTML = html;
+
+          postContent.innerHTML = '';
+          postContent.appendChild(documentBody);
+
+          applyDocumentPresentation(documentBody);
         } else {
           // Fallback: display as plain text with basic formatting
           postContent.innerHTML = `<pre>${markdownWithoutFrontmatter}</pre>`;
