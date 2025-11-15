@@ -1,0 +1,44 @@
+Copyright (c) 2025 Plu101
+
+All rights reserved.
+
+This repository contains the source code, styling, and custom blog workflow
+for the personal PLU101 portfolio website.
+
+Except where otherwise noted, you are NOT permitted to:
+
+- Copy, modify, or redistribute the HTML structure, CSS styling, or JavaScript
+  logic used to implement the dashboard, blog system, or overall visual design;
+- Reuse the custom blog parsing and rendering workflow (including index
+  generation and client-side parsing logic) in your own projects;
+- Use the PLU101 name, logo, or branding assets in a way that suggests
+  endorsement or affiliation without prior written permission.
+
+You ARE permitted to:
+
+- View and browse the website and this source code for personal, non-commercial
+  reference and learning;
+- Clone the repository locally for personal study and experimentation, as long
+  as you do not:
+  - publish it as your own project,
+  - reuse the design or blog workflow in a public product,
+  - or otherwise violate the restrictions above.
+
+Third-party components
+----------------------
+
+This project uses third-party libraries and assets which are NOT covered by
+this license and remain under their respective licenses, including but not
+limited to:
+
+- Font Awesome icons (https://fontawesome.com/)
+- marked.js Markdown parser (https://marked.js.org/)
+- Google Fonts (https://fonts.google.com/)
+
+You must comply with those licenses separately when using or redistributing
+those components.
+
+For commercial use, redistribution, or licensing questions, please contact:
+  maker@protonmail.com
+
+

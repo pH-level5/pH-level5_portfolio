@@ -3,6 +3,10 @@
 """
 Automatic Blog Index Generator (Python version)
 
+(c) 2025 Plu101 – All rights reserved.
+This script is part of the custom PLU101 blog workflow and may not be
+copied or reused without permission.
+
 Run this script to automatically generate blog-index.json
 from all .md files in the posts/ directory (excluding template.md)
 

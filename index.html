@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<!--
+  (c) 2025 Plu101 – All rights reserved.
+  Custom portfolio layout, styling, and blog workflow are proprietary.
+  Third-party libraries (Font Awesome, marked.js, Google Fonts, etc.)
+  remain under their own licenses.
+-->
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -183,114 +189,145 @@
       <section id="projects" class="dashboard-section">
         <div class="dashboard-shell">
           <div class="section-title">
-            <h1>FEATURED PROJECTS</h1>
-            <p class="section-subtitle"><i class="fas fa-folder-open"></i> Personal projects and contributions</p>
+            <h1>PROJECTS</h1>
+            <p class="section-subtitle"><i class="fas fa-code-branch"></i> Development work and creative projects</p>
           </div>
 
-          <div class="dashboard-grid projects-grid">
-            <article class="dashboard-card card-3d project-card">
-              <div class="project-thumbnail">
-                <div class="thumbnail-placeholder"><i class="fas fa-cube"></i></div>
-                <div class="project-status"><i class="fas fa-circle"></i> ACTIVE</div>
+          <!-- Projects Banner -->
+          <div class="projects-banner">
+            <div class="banner-background">
+              <div class="banner-grid"></div>
+              <div class="banner-particles" id="bannerParticles"></div>
+            </div>
+            <div class="banner-content">
+              <div class="banner-icon">
+                <i class="fas fa-code-branch"></i>
+              </div>
+              <p class="banner-description">Explore my work across game development, web applications, tools, and creative assets</p>
+              <div class="banner-stats">
+                <div class="banner-stat">
+                  <span class="stat-number" data-count="15">0</span>
+                  <span class="stat-label">Total Projects</span>
+                </div>
+                <div class="banner-stat">
+                  <span class="stat-number" data-count="10000">0</span>
+                  <span class="stat-label">Downloads</span>
+                </div>
+                <div class="banner-stat">
+                  <span class="stat-number" data-count="6">0</span>
+                  <span class="stat-label">Categories</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Featured Projects Section -->
+          <div class="section-title">
+            <h2><i class="fas fa-star"></i> FEATURED PROJECTS</h2>
+            <p class="section-subtitle">Highlighted work currently in active development</p>
+          </div>
+
+          <div class="dashboard-grid projects-grid" id="featuredProjectsGrid">
+            <!-- Main App Download Project -->
+            <article class="dashboard-card card-3d project-card project-card--featured">
+              <div class="project-thumbnail project-thumbnail--app">
+                <div class="thumbnail-placeholder">
+                  <div class="app-icon-container">
+                    <i class="fas fa-desktop"></i>
+                    <div class="icon-glow"></div>
+                  </div>
+                </div>
+                <div class="project-status project-status--testing">
+                  <i class="fas fa-flask"></i> TESTING PHASE
+                </div>
               </div>
               <div class="blog-card-header">
-                <span class="card-eyebrow"><i class="fas fa-chevron-right"></i> 3D CREATOR</span>
+                <span class="card-eyebrow"><i class="fas fa-rocket"></i> DESKTOP APPLICATION</span>
+                <h3>My Application</h3>
+              </div>
+              <div class="card-body">
+                <p class="expandable-text" data-expanded="false">
+                  <span class="text-content">Desktop application currently in testing phase. Download the pre-built version to test and provide feedback. The app is still in active development, and your input helps shape the final release. Features are being refined based on community testing.</span>
+                  <button class="read-more-btn"><i class="fas fa-chevron-right"></i> READ MORE</button>
+                </p>
+                <div class="project-tags">
+                  <span><i class="fas fa-desktop"></i> Desktop App</span>
+                  <span><i class="fas fa-vial"></i> Beta Testing</span>
+                  <span><i class="fas fa-code-branch"></i> v1.0.0</span>
+                </div>
+                <div class="project-notice project-notice--download">
+                  <i class="fas fa-download"></i>
+                  <span>Pre-built test version available for download</span>
+                </div>
+              </div>
+              <div class="card-footer card-footer--download">
+                <div class="download-actions">
+                  <button class="card-link btn-download btn-download--primary" id="downloadAppBtn" data-app-version="1.0.0">
+                    <span class="btn-download-icon">
+                      <i class="fas fa-download"></i>
+                    </span>
+                    <span class="btn-download-text">
+                      <span class="btn-main-text">DOWNLOAD TEST VERSION</span>
+                      <span class="btn-sub-text">Free • Windows/Mac/Linux</span>
+                    </span>
+                    <span class="btn-arrow">
+                      <i class="fas fa-arrow-right"></i>
+                    </span>
+                  </button>
+                  <button class="btn-details" id="viewDetailsBtn">
+                    <i class="fas fa-info-circle"></i>
+                    <span>View Details</span>
+                  </button>
+                </div>
+                <div class="card-meta">
+                  <span class="card-year"><i class="far fa-calendar"></i> 2025</span>
+                  <span class="card-size"><i class="fas fa-file-archive"></i> ~15 MB</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- 3D Modeling Tool - Paused -->
+            <article class="dashboard-card card-3d project-card project-card--paused">
+              <div class="project-thumbnail project-thumbnail--3d">
+                <div class="thumbnail-placeholder">
+                  <div class="rotating-cube">
+                    <i class="fas fa-cube"></i>
+                  </div>
+                </div>
+                <div class="project-status project-status--paused">
+                  <i class="fas fa-pause-circle"></i> PAUSED
+                </div>
+              </div>
+              <div class="blog-card-header">
+                <span class="card-eyebrow"><i class="fas fa-cube"></i> 3D CREATOR</span>
                 <h3>Browser Modeling Tool</h3>
               </div>
               <div class="card-body">
                 <p class="expandable-text" data-expanded="false">
-                  <span class="text-content">React + Three.js browser-based 3D editor with procedural modifiers and export capabilities (GLTF/OBJ/STL). Features real-time preview and transform controls for quick 3D prototyping.</span>
+                  <span class="text-content">React + Three.js browser-based 3D editor with procedural modifiers and export capabilities (GLTF/OBJ/STL). Features real-time preview and transform controls for quick 3D prototyping. Development temporarily paused while focusing on other projects.</span>
                   <button class="read-more-btn"><i class="fas fa-chevron-right"></i> READ MORE</button>
                 </p>
                 <div class="project-tags">
-                  <span>React</span>
-                  <span>Three.js</span>
-                  <span>WebGL</span>
+                  <span><i class="fab fa-react"></i> React</span>
+                  <span><i class="fas fa-cube"></i> Three.js</span>
+                  <span><i class="fas fa-swatchbook"></i> WebGL</span>
+                </div>
+                <div class="project-notice project-notice--paused">
+                  <i class="fas fa-clock"></i>
+                  <span>Development on hold • Will resume in future</span>
                 </div>
               </div>
               <div class="card-footer">
-                <a class="card-link" href="../3dCreator/index.html" target="_blank"><i class="fas fa-external-link-alt"></i> OPEN DEMO</a>
-                <span class="card-year">2025</span>
+                <a class="card-link card-link--disabled" href="../3dCreator/index.html" target="_blank">
+                  <i class="fas fa-external-link-alt"></i> DEMO UNAVAILABLE
+                </a>
+                <span class="card-year"><i class="far fa-calendar"></i> 2025</span>
               </div>
             </article>
+          </div>
 
-            <article class="dashboard-card card-3d project-card">
-              <div class="project-thumbnail">
-                <div class="thumbnail-placeholder"><i class="fas fa-gamepad"></i></div>
-                <div class="project-status"><i class="fas fa-circle"></i> ACTIVE</div>
-              </div>
-              <div class="blog-card-header">
-                <span class="card-eyebrow"><i class="fas fa-chevron-right"></i> WORKSHOP ADDON</span>
-                <h3>Garry's Mod Content</h3>
-              </div>
-              <div class="card-body">
-                <p class="expandable-text" data-expanded="false">
-                  <span class="text-content">Popular GMod addon with 10k+ downloads and 8k subscribers. Gameplay extension developed in Lua with optimized performance and visual effects. Features custom mechanics and seamless integration with the Source engine.</span>
-                  <button class="read-more-btn"><i class="fas fa-chevron-right"></i> READ MORE</button>
-                </p>
-                <div class="project-tags">
-                  <span>Lua</span>
-                  <span>Source Engine</span>
-                  <span>Workshop</span>
-                </div>
-              </div>
-              <div class="card-footer">
-                <a class="card-link" href="https://steamcommunity.com/workshop/" target="_blank"><i class="fas fa-external-link-alt"></i> VIEW WORKSHOP</a>
-                <span class="card-year">2022</span>
-              </div>
-            </article>
-
-            <article class="dashboard-card card-3d project-card">
-              <div class="project-thumbnail">
-                <div class="thumbnail-placeholder"><i class="fas fa-terminal"></i></div>
-                <div class="project-status"><i class="fas fa-circle"></i> STABLE</div>
-              </div>
-              <div class="blog-card-header">
-                <span class="card-eyebrow"><i class="fas fa-chevron-right"></i> CLI TOOL</span>
-                <h3>Ch4os Engine</h3>
-              </div>
-              <div class="card-body">
-                <p class="expandable-text" data-expanded="false">
-                  <span class="text-content">Python command-line toolkit for automation and information lookup. Integrates with Wolfram|Alpha and Wikipedia for quick research. Includes various helper utilities for development workflows.</span>
-                  <button class="read-more-btn"><i class="fas fa-chevron-right"></i> READ MORE</button>
-                </p>
-                <div class="project-tags">
-                  <span>Python</span>
-                  <span>CLI</span>
-                  <span>Automation</span>
-                </div>
-              </div>
-              <div class="card-footer">
-                <a class="card-link" href="../ch4os_ai/ch4os_engine.py" target="_blank"><i class="fas fa-external-link-alt"></i> VIEW SOURCE</a>
-                <span class="card-year">2023</span>
-              </div>
-            </article>
-
-            <article class="dashboard-card card-3d project-card">
-              <div class="project-thumbnail">
-                <div class="thumbnail-placeholder"><i class="fas fa-volume-up"></i></div>
-                <div class="project-status"><i class="fas fa-circle"></i> RELEASED</div>
-              </div>
-              <div class="blog-card-header">
-                <span class="card-eyebrow"><i class="fas fa-chevron-right"></i> AUDIO PACK</span>
-                <h3>Backpack SFX Bundle</h3>
-              </div>
-              <div class="card-body">
-                <p class="expandable-text" data-expanded="false">
-                  <span class="text-content">Sound effects library for Unreal Engine with 112 audio cues. Includes gear handling sounds and inventory interactions with multiple variations. Ready for integration into adventure and RPG titles.</span>
-                  <button class="read-more-btn"><i class="fas fa-chevron-right"></i> READ MORE</button>
-                </p>
-                <div class="project-tags">
-                  <span>Unreal Engine</span>
-                  <span>Sound Design</span>
-                  <span>Foley</span>
-                </div>
-              </div>
-              <div class="card-footer">
-                <a class="card-link" href="../BackpackSFXBundle/AssetStore.uproject" target="_blank"><i class="fas fa-external-link-alt"></i> PROJECT FILE</a>
-                <span class="card-year">2024</span>
-              </div>
-            </article>
+          <!-- All Projects by Category -->
+          <div class="projects-categories" id="projectsCategories">
+            <!-- Categories will be dynamically loaded here -->
           </div>
         </div>
       </section>
@@ -515,6 +552,210 @@
         </div>
       </section>
     </main>
+
+    <!-- App Details Modal -->
+    <div id="detailsModal" class="download-modal details-modal" aria-hidden="true" role="dialog" aria-labelledby="detailsModalTitle" aria-modal="true">
+      <div class="download-modal__backdrop"></div>
+      <div class="download-modal__container download-modal__container--large">
+        <div class="download-modal__content">
+          <button class="download-modal__close" aria-label="Close modal">
+            <i class="fas fa-times"></i>
+          </button>
+          
+          <div class="download-modal__header">
+            <div class="modal-icon modal-icon--app">
+              <i class="fas fa-desktop"></i>
+            </div>
+            <h2 id="detailsModalTitle">My Application - Details</h2>
+            <div class="version-badge">
+              <i class="fas fa-code-branch"></i> Version 1.0.0 - Testing Phase
+            </div>
+          </div>
+          
+          <div class="download-modal__body details-modal__body">
+            <div class="details-section">
+              <h3><i class="fas fa-star"></i> Overview</h3>
+              <p>
+                My Application is a powerful desktop tool designed to [describe your app's main purpose]. 
+                Currently in testing phase, we're looking for early adopters to help us refine the experience 
+                and identify any issues before the official release.
+              </p>
+            </div>
+
+            <div class="details-section">
+              <h3><i class="fas fa-sparkles"></i> Key Features</h3>
+              <ul class="features-list">
+                <li><i class="fas fa-check"></i> Feature 1: [Your feature description]</li>
+                <li><i class="fas fa-check"></i> Feature 2: [Your feature description]</li>
+                <li><i class="fas fa-check"></i> Feature 3: [Your feature description]</li>
+                <li><i class="fas fa-check"></i> Feature 4: [Your feature description]</li>
+                <li><i class="fas fa-check"></i> Feature 5: [Your feature description]</li>
+              </ul>
+            </div>
+
+            <div class="details-section">
+              <h3><i class="fas fa-laptop"></i> System Requirements</h3>
+              <div class="requirements-grid">
+                <div class="requirement-item">
+                  <div class="req-icon"><i class="fab fa-windows"></i></div>
+                  <div class="req-content">
+                    <strong>Windows</strong>
+                    <p>Windows 10/11 (64-bit)</p>
+                  </div>
+                </div>
+                <div class="requirement-item">
+                  <div class="req-icon"><i class="fab fa-apple"></i></div>
+                  <div class="req-content">
+                    <strong>macOS</strong>
+                    <p>macOS 11.0 or later</p>
+                  </div>
+                </div>
+                <div class="requirement-item">
+                  <div class="req-icon"><i class="fab fa-linux"></i></div>
+                  <div class="req-content">
+                    <strong>Linux</strong>
+                    <p>Ubuntu 20.04+ / Debian</p>
+                  </div>
+                </div>
+                <div class="requirement-item">
+                  <div class="req-icon"><i class="fas fa-memory"></i></div>
+                  <div class="req-content">
+                    <strong>RAM</strong>
+                    <p>4 GB minimum, 8 GB recommended</p>
+                  </div>
+                </div>
+                <div class="requirement-item">
+                  <div class="req-icon"><i class="fas fa-hdd"></i></div>
+                  <div class="req-content">
+                    <strong>Storage</strong>
+                    <p>200 MB available space</p>
+                  </div>
+                </div>
+                <div class="requirement-item">
+                  <div class="req-icon"><i class="fas fa-microchip"></i></div>
+                  <div class="req-content">
+                    <strong>Processor</strong>
+                    <p>Any modern CPU (2015+)</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="details-section">
+              <h3><i class="fas fa-exclamation-triangle"></i> Testing Phase Notice</h3>
+              <div class="testing-notice">
+                <p>
+                  <strong>This is a beta version.</strong> While we've tested extensively, you may encounter bugs or unexpected behavior. 
+                  Please report any issues you find to help us improve the application.
+                </p>
+                <p>Your feedback is invaluable and will directly influence the final release!</p>
+              </div>
+            </div>
+
+            <div class="details-section">
+              <h3><i class="fas fa-book"></i> Installation Instructions</h3>
+              <ol class="install-steps">
+                <li>Download the application file for your operating system</li>
+                <li>Extract the downloaded archive to your preferred location</li>
+                <li>Run the application executable</li>
+                <li>Follow the on-screen setup instructions</li>
+                <li>Start using the app and provide feedback!</li>
+              </ol>
+            </div>
+
+            <div class="details-section">
+              <h3><i class="fas fa-question-circle"></i> Need Help?</h3>
+              <p>
+                If you encounter any issues or have questions, feel free to reach out via the 
+                <a href="#support" class="inline-link">Support page</a> or email directly at 
+                <a href="mailto:maker@protonmail.com" class="inline-link">maker@protonmail.com</a>.
+              </p>
+            </div>
+          </div>
+          
+          <div class="download-modal__actions">
+            <button class="btn-modal btn-modal--download btn-modal--large" id="downloadFromDetailsBtn">
+              <span class="btn-icon"><i class="fas fa-download"></i></span>
+              <span class="btn-text">
+                <span class="btn-title">Download Now</span>
+                <span class="btn-subtitle">Free • ~15 MB</span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Download Modal with Ko-fi Support Prompt -->
+    <div id="downloadModal" class="download-modal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
+      <div class="download-modal__backdrop"></div>
+      <div class="download-modal__container">
+        <div class="download-modal__content">
+          <button class="download-modal__close" aria-label="Close modal">
+            <i class="fas fa-times"></i>
+          </button>
+          
+          <div class="download-modal__header">
+            <div class="modal-icon">
+              <i class="fas fa-heart"></i>
+            </div>
+            <h2 id="modalTitle">Support the Developer?</h2>
+          </div>
+          
+          <div class="download-modal__body">
+            <p class="modal-message">
+              Thank you for downloading my application! If you find it useful, 
+              please consider supporting its development with a tip on Ko-fi. 
+              Your support helps me dedicate more time to updates, bug fixes, and new features.
+            </p>
+            
+            <div class="modal-features">
+              <div class="modal-feature">
+                <i class="fas fa-check-circle"></i>
+                <span>Free forever, no strings attached</span>
+              </div>
+              <div class="modal-feature">
+                <i class="fas fa-check-circle"></i>
+                <span>Your support funds development</span>
+              </div>
+              <div class="modal-feature">
+                <i class="fas fa-check-circle"></i>
+                <span>Help prioritize new features</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="download-modal__actions">
+            <a 
+              href="https://ko-fi.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="btn-modal btn-modal--kofi"
+              id="kofiSupportBtn"
+            >
+              <span class="btn-icon"><i class="fas fa-coffee"></i></span>
+              <span class="btn-text">
+                <span class="btn-title">Support on Ko-fi</span>
+                <span class="btn-subtitle">Opens in new tab</span>
+              </span>
+            </a>
+            
+            <button class="btn-modal btn-modal--download" id="continueDownloadBtn">
+              <span class="btn-icon"><i class="fas fa-download"></i></span>
+              <span class="btn-text">
+                <span class="btn-title">Continue to Download</span>
+                <span class="btn-subtitle">Start download immediately</span>
+              </span>
+            </button>
+          </div>
+          
+          <p class="download-modal__footer-note">
+            <i class="fas fa-info-circle"></i>
+            You can always support later from the Support page
+          </p>
+        </div>
+      </div>
+    </div>
 
     <footer class="dashboard-footer">
       <div class="dashboard-shell">

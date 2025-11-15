@@ -1,6 +1,11 @@
 // ================================
 // TECH CREATOR DASHBOARD
 // Interactive Dashboard JavaScript
+//
+// (c) 2025 Plu101 – All rights reserved.
+// Custom UI logic and blog parsing workflow are proprietary.
+// Third-party libraries (e.g. marked.js, Font Awesome) remain under
+// their own licenses.
 // ================================
 
 (function() {
@@ -26,6 +31,10 @@
     
     initAutoBlogGeneration(); // Auto-generate blog cards from markdown files
     initBlogPostViewer();
+    initDownloadModal(); // Initialize app download modal with Ko-fi prompt
+    initDetailsModal(); // Initialize app details modal
+    initProjectsBanner(); // Initialize projects banner animations
+    initProjectsLoader(); // Load and render projects from JSON
     console.log('✓ Dashboard initialized');
   });
 
@@ -989,6 +998,437 @@
   }
 
   // ================================
+  // APP DOWNLOAD MODAL WITH KO-FI SUPPORT
+  // ================================
+
+  function initDownloadModal() {
+    const downloadBtn = document.getElementById('downloadAppBtn');
+    const modal = document.getElementById('downloadModal');
+    const continueBtn = document.getElementById('continueDownloadBtn');
+    const closeBtn = modal?.querySelector('.download-modal__close');
+    const backdrop = modal?.querySelector('.download-modal__backdrop');
+    const kofiBtn = document.getElementById('kofiSupportBtn');
+
+    // Configuration - Update this when you upload your actual app file
+    const APP_CONFIG = {
+      version: '1.0.0',
+      fileName: 'my-app-1.0.0.zip',
+      // For local files (small apps):
+      downloadUrl: 'assets/downloads/my-app-1.0.0.zip',
+      // For GitHub Releases (recommended for larger apps):
+      // downloadUrl: 'https://github.com/YOUR_USERNAME/YOUR_REPO/releases/download/v1.0.0/my-app-1.0.0.zip',
+      // For external CDN:
+      // downloadUrl: 'https://your-cdn-url.com/downloads/my-app-1.0.0.zip',
+    };
+
+    function showModal() {
+      if (!modal) return;
+      modal.setAttribute('aria-hidden', 'false');
+      modal.classList.add('is-open');
+      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+      
+      // Focus trap
+      const firstFocusable = modal.querySelector('button, a');
+      if (firstFocusable) firstFocusable.focus();
+      
+      announcePageChange('Download support modal opened');
+    }
+
+    function hideModal() {
+      if (!modal) return;
+      modal.setAttribute('aria-hidden', 'true');
+      modal.classList.remove('is-open');
+      document.body.style.overflow = ''; // Restore scrolling
+      announcePageChange('Download support modal closed');
+    }
+
+    function triggerDownload() {
+      const a = document.createElement('a');
+      a.href = APP_CONFIG.downloadUrl;
+      a.download = APP_CONFIG.fileName;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      
+      // Clean up and show confirmation
+      setTimeout(() => {
+        document.body.removeChild(a);
+        announcePageChange(`Download started: ${APP_CONFIG.fileName}`);
+        
+        // Show success message (optional)
+        showDownloadConfirmation();
+      }, 100);
+    }
+
+    function showDownloadConfirmation() {
+      const confirmation = document.createElement('div');
+      confirmation.className = 'download-confirmation';
+      confirmation.innerHTML = `
+        <div class="confirmation-content">
+          <i class="fas fa-check-circle"></i>
+          <span>Download started! Check your downloads folder.</span>
+        </div>
+      `;
+      confirmation.style.cssText = `
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: rgba(76, 175, 80, 0.95);
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        z-index: 10000;
+        animation: slideInUp 0.3s ease-out;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      `;
+      
+      document.body.appendChild(confirmation);
+      
+      setTimeout(() => {
+        confirmation.style.animation = 'slideOutDown 0.3s ease-in';
+        setTimeout(() => confirmation.remove(), 300);
+      }, 3000);
+    }
+
+    // Event: Show modal when download button is clicked
+    if (downloadBtn) {
+      downloadBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        showModal();
+      });
+    }
+
+    // Event: Continue to download (skip Ko-fi)
+    if (continueBtn) {
+      continueBtn.addEventListener('click', () => {
+        hideModal();
+        triggerDownload();
+      });
+    }
+
+    // Event: Ko-fi button clicked
+    if (kofiBtn) {
+      kofiBtn.addEventListener('click', () => {
+        // Ko-fi link opens in new tab automatically
+        // After a short delay, offer download
+        setTimeout(() => {
+          hideModal();
+          triggerDownload();
+        }, 500);
+      });
+    }
+
+    // Event: Close modal button
+    if (closeBtn) {
+      closeBtn.addEventListener('click', hideModal);
+    }
+
+    // Event: Click backdrop to close
+    if (backdrop) {
+      backdrop.addEventListener('click', hideModal);
+    }
+
+    // Event: Escape key to close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal?.classList.contains('is-open')) {
+        hideModal();
+      }
+    });
+
+    console.log('✓ Download modal initialized');
+  }
+
+  // ================================
+  // APP DETAILS MODAL
+  // ================================
+
+  function initDetailsModal() {
+    const detailsBtn = document.getElementById('viewDetailsBtn');
+    const detailsModal = document.getElementById('detailsModal');
+    const closeBtn = detailsModal?.querySelector('.download-modal__close');
+    const backdrop = detailsModal?.querySelector('.download-modal__backdrop');
+    const downloadFromDetailsBtn = document.getElementById('downloadFromDetailsBtn');
+
+    function showDetailsModal() {
+      if (!detailsModal) return;
+      detailsModal.setAttribute('aria-hidden', 'false');
+      detailsModal.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      
+      const firstFocusable = detailsModal.querySelector('button, a');
+      if (firstFocusable) firstFocusable.focus();
+      
+      announcePageChange('App details modal opened');
+    }
+
+    function hideDetailsModal() {
+      if (!detailsModal) return;
+      detailsModal.setAttribute('aria-hidden', 'true');
+      detailsModal.classList.remove('is-open');
+      document.body.style.overflow = '';
+      announcePageChange('App details modal closed');
+    }
+
+    // Event: Show details modal
+    if (detailsBtn) {
+      detailsBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        showDetailsModal();
+      });
+    }
+
+    // Event: Download from details modal
+    if (downloadFromDetailsBtn) {
+      downloadFromDetailsBtn.addEventListener('click', () => {
+        hideDetailsModal();
+        // Trigger the download modal with Ko-fi prompt
+        setTimeout(() => {
+          const downloadModal = document.getElementById('downloadModal');
+          if (downloadModal) {
+            downloadModal.setAttribute('aria-hidden', 'false');
+            downloadModal.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+          }
+        }, 300);
+      });
+    }
+
+    // Event: Close button
+    if (closeBtn) {
+      closeBtn.addEventListener('click', hideDetailsModal);
+    }
+
+    // Event: Click backdrop to close
+    if (backdrop) {
+      backdrop.addEventListener('click', hideDetailsModal);
+    }
+
+    // Event: Escape key to close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && detailsModal?.classList.contains('is-open')) {
+        hideDetailsModal();
+      }
+    });
+
+    // Handle inline links that might close modal
+    const inlineLinks = detailsModal?.querySelectorAll('.inline-link');
+    inlineLinks?.forEach(link => {
+      link.addEventListener('click', (e) => {
+        if (link.getAttribute('href').startsWith('#')) {
+          hideDetailsModal();
+        }
+      });
+    });
+
+    console.log('✓ Details modal initialized');
+  }
+
+  // ================================
+  // PROJECTS BANNER ANIMATION
+  // ================================
+
+  function initProjectsBanner() {
+    const bannerParticles = document.getElementById('bannerParticles');
+    if (!bannerParticles) return;
+
+    // Create floating particles
+    for (let i = 0; i < 20; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'banner-particle';
+      particle.style.cssText = `
+        position: absolute;
+        width: ${Math.random() * 4 + 2}px;
+        height: ${Math.random() * 4 + 2}px;
+        background: var(--color-accent);
+        border-radius: 50%;
+        left: ${Math.random() * 100}%;
+        top: ${Math.random() * 100}%;
+        opacity: ${Math.random() * 0.5 + 0.2};
+        animation: floatParticle ${Math.random() * 10 + 5}s ease-in-out infinite;
+        animation-delay: ${Math.random() * 5}s;
+      `;
+      bannerParticles.appendChild(particle);
+    }
+
+    // Add particle animation styles
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes floatParticle {
+        0%, 100% {
+          transform: translate(0, 0);
+        }
+        25% {
+          transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px);
+        }
+        50% {
+          transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px);
+        }
+        75% {
+          transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
+    console.log('✓ Projects banner initialized');
+  }
+
+  // ================================
+  // PROJECTS LOADER (Dynamic from JSON)
+  // ================================
+
+  async function initProjectsLoader() {
+    try {
+      // Load projects data
+      const response = await fetch('projects/projects.json');
+      if (!response.ok) {
+        console.warn('Projects JSON not found, using inline projects');
+        return;
+      }
+
+      const projectsData = await response.json();
+      
+      // Render categorized projects
+      renderProjectCategories(projectsData);
+      
+      // Update banner stats
+      updateBannerStats(projectsData);
+      
+      console.log('✓ Projects loaded from JSON');
+    } catch (error) {
+      console.error('Error loading projects:', error);
+    }
+  }
+
+  function renderProjectCategories(projectsData) {
+    const categoriesContainer = document.getElementById('projectsCategories');
+    if (!categoriesContainer || !projectsData.categories) return;
+
+    categoriesContainer.innerHTML = '';
+
+    Object.entries(projectsData.categories).forEach(([categoryId, categoryData]) => {
+      const categorySection = document.createElement('div');
+      categorySection.className = 'project-category';
+      categorySection.id = `category-${categoryId}`;
+
+      const projectsCount = categoryData.projects.length;
+      
+      categorySection.innerHTML = `
+        <div class="category-header">
+          <div class="category-title-group">
+            <div class="category-icon">
+              <i class="${categoryData.icon}"></i>
+            </div>
+            <div class="category-title-text">
+              <h3>${categoryData.title}</h3>
+              <p>${categoryData.description}</p>
+            </div>
+          </div>
+          <div class="category-count">${projectsCount} ${projectsCount === 1 ? 'Project' : 'Projects'}</div>
+        </div>
+        <div class="category-projects-grid"></div>
+      `;
+
+      const projectsGrid = categorySection.querySelector('.category-projects-grid');
+
+      if (projectsCount === 0) {
+        projectsGrid.innerHTML = `
+          <div class="category-empty">
+            <i class="${categoryData.icon}"></i>
+            <p>No projects in this category yet</p>
+          </div>
+        `;
+      } else {
+        categoryData.projects.forEach(project => {
+          projectsGrid.appendChild(createProjectCard(project));
+        });
+      }
+
+      categoriesContainer.appendChild(categorySection);
+    });
+
+    // Re-initialize expandable text for new cards
+    initializeTruncatedText();
+  }
+
+  function createProjectCard(project) {
+    const card = document.createElement('article');
+    card.className = `dashboard-card card-3d project-card project-card--${project.statusType || 'default'}`;
+
+    const tagsHTML = project.tags ? project.tags.map(tag => `<span>${tag}</span>`).join('') : '';
+    const linkHTML = project.link ? 
+      `<a class="card-link" href="${project.link}" target="_blank"><i class="fas fa-external-link-alt"></i> VIEW PROJECT</a>` :
+      `<span class="card-link card-link--disabled"><i class="fas fa-link-slash"></i> NO LINK</span>`;
+
+    card.innerHTML = `
+      <div class="project-thumbnail">
+        <div class="thumbnail-placeholder">
+          <i class="${project.icon}"></i>
+        </div>
+        <div class="project-status project-status--${project.statusType}">
+          <i class="${getStatusIcon(project.statusType)}"></i> ${project.status.toUpperCase()}
+        </div>
+      </div>
+      <div class="blog-card-header">
+        <span class="card-eyebrow"><i class="${project.icon}"></i> ${project.category.toUpperCase()}</span>
+        <h3>${project.title}</h3>
+      </div>
+      <div class="card-body">
+        <p class="expandable-text" data-expanded="false">
+          <span class="text-content">${project.description}</span>
+          <button class="read-more-btn"><i class="fas fa-chevron-right"></i> READ MORE</button>
+        </p>
+        ${tagsHTML ? `<div class="project-tags">${tagsHTML}</div>` : ''}
+      </div>
+      <div class="card-footer">
+        ${linkHTML}
+        <span class="card-year">${project.year}</span>
+      </div>
+    `;
+
+    return card;
+  }
+
+  function getStatusIcon(statusType) {
+    const icons = {
+      'testing': 'fas fa-flask',
+      'active': 'fas fa-circle',
+      'stable': 'fas fa-check-circle',
+      'paused': 'fas fa-pause-circle',
+      'released': 'fas fa-rocket',
+      'archived': 'fas fa-archive'
+    };
+    return icons[statusType] || 'fas fa-circle';
+  }
+
+  function updateBannerStats(projectsData) {
+    // Count total projects
+    let totalProjects = projectsData.featured ? projectsData.featured.length : 0;
+    let categoriesCount = 0;
+    
+    if (projectsData.categories) {
+      Object.values(projectsData.categories).forEach(category => {
+        totalProjects += category.projects.length;
+      });
+      categoriesCount = Object.keys(projectsData.categories).length;
+    }
+
+    // Update stat numbers
+    const statNumbers = document.querySelectorAll('.banner-stat .stat-number');
+    if (statNumbers[0]) statNumbers[0].setAttribute('data-count', totalProjects);
+    if (statNumbers[2]) statNumbers[2].setAttribute('data-count', categoriesCount);
+
+    // Re-animate counters
+    statNumbers.forEach(counter => {
+      counter.dataset.counted = 'false';
+      animateCounter(counter);
+    });
+  }
+
+  // ================================
   // UTILITY FUNCTIONS
   // ================================
 
@@ -1011,29 +1451,7 @@
   // ACCESSIBILITY ENHANCEMENTS
   // ================================
 
-  // Add skip to content link
-  const skipLink = document.createElement('a');
-  skipLink.href = '#main-content';
-  skipLink.textContent = 'Skip to main content';
-  skipLink.className = 'skip-link';
-  skipLink.style.cssText = `
-    position: absolute;
-    top: -40px;
-    left: 0;
-    background: var(--color-accent);
-    color: var(--color-bg);
-    padding: 8px;
-    z-index: 10000;
-    text-decoration: none;
-  `;
-  skipLink.addEventListener('focus', function() {
-    this.style.top = '0';
-  });
-  skipLink.addEventListener('blur', function() {
-    this.style.top = '-40px';
-  });
-  document.body.prepend(skipLink);
-
+  
   // Announce page changes to screen readers
   function announcePageChange(message) {
     const announcement = document.createElement('div');

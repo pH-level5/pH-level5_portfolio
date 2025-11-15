@@ -312,7 +312,17 @@ This is a personal portfolio template, but feel free to:
 
 ## 📄 License
 
-This project is open source and available for personal use. Feel free to use it as a template for your own portfolio!
+Unless otherwise noted, the custom layout, CSS styling, JavaScript logic, and
+blog workflow in this repository are **proprietary** and **all rights reserved**.
+
+- You **may** browse the code and use this site as your personal portfolio.
+- You **may not** copy or reuse the design, styles, or blog parsing workflow
+  in your own public projects without explicit permission.
+
+Third-party libraries (such as **Font Awesome**, **marked.js**, and **Google Fonts**)
+remain under their own licenses and are **not** covered by this repository's license.
+
+For usage or licensing questions, contact: `maker@protonmail.com`
 
 ## 🙏 Credits
 

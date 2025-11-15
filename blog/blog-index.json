@@ -2,9 +2,9 @@
   "posts": [
     "new-blog-system.md",
     "10k-downloads.md",
-    "3d-modeling-basics.md",
-    "template.md"
+    "3d-modeling-basics.md"
   ],
-  "description": "Blog post index - add new markdown files here for automatic loading"
+  "description": "Blog post index - automatically generated",
+  "generatedAt": "2025-11-15T13:02:16.678927",
+  "count": 3
 }
-
