@@ -1,2 +1,4 @@
-/REDESIGN_NOTES.md
-/UPDATE_SUMMARY.md
+start-server.bat
+setup.sh
+run.py
+run.sh
