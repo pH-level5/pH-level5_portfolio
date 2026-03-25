@@ -17,7 +17,7 @@ This repository exists primarily to **present the live site**. The underlying im
 
 This site is designed as an interactive, single-page portfolio with a strong emphasis on motion, clarity, and structure. It blends a developer dashboard aesthetic with smooth transitions, subtle 3D effects, and a clean reading experience for longer content.
 
-The entire website is **static**, running fully in the browser with no backend or build pipeline. All interactivity, rendering, and content handling are done client-side.
+The entire website is **static**, running fully in the browser besides the Blogpage functionality, witch requires a local server that provides a directory route for Markdown file which get converted to a blogpost. All interactivity, rendering, and content handling are done client-side.
 
 ---
 
@@ -34,7 +34,7 @@ The entire website is **static**, running fully in the browser with no backend o
 - Expandable profile sections with animated elements
 - Visual emphasis on tools, skills, and ongoing work
 
-### Markdown-Powered Blog
+### Markdown-Powered Blog (disabled for static hosting)
 - Blog content is authored in Markdown and rendered dynamically
 - Metadata-driven cards and timeline-style presentation
 - Dedicated reading view with consistent typography and styling
@@ -51,7 +51,6 @@ The entire website is **static**, running fully in the browser with no backend o
 ## Technology Snapshot
 
 The site is built using a lightweight, framework-free stack:
-
 - **HTML5** — semantic structure
 - **CSS3** — layout, animations, and visual design
 - **Vanilla JavaScript (ES6+)** — interactivity and dynamic behavior
@@ -84,7 +83,7 @@ Unless otherwise stated:
 - The code is **not licensed for reuse** in other public or commercial projects
 - Third-party libraries and assets remain under their respective licenses
 
-For licensing or usage inquiries, contact: `maker@protonmail.com`
+For licensing or usage inquiries, contact: @plu101
 
 ---
 
@@ -94,9 +93,10 @@ For licensing or usage inquiries, contact: `maker@protonmail.com`
 - **Markdown Rendering:** marked.js
 - **Icons:** Font Awesome
 - **Fonts:** Google Fonts
+- **Animation and dynamic Elements Workflow:** Canvas
 
 ---
 
-Crafted with curiosity, iteration, and way too much tweaking.
+Crafted with curiosity, iteration, a bit of vibe-coding and way too much tweaking.
 
 **[View Live Site](https://plu101.github.io/personal_profile)**
