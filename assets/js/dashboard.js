@@ -21,6 +21,7 @@
     initCounters();
     initCanvasBackground();
     initScrollAnimations();
+    initContactCard();
     
     // Ensure fullpost section is hidden initially
     const fullpostSection = document.getElementById('fullpost');
@@ -81,7 +82,7 @@
   // EXPANDABLE TEXT WITH TYPEWRITER (Simplified)
   // ================================
 
-  const TYPING_SPEED = 25; // milliseconds per character
+  const TYPING_SPEED = 12; // milliseconds per character (fast)
   const TRUNCATE_LENGTH = 100; // characters to show in collapsed state
 
   function truncateText(text) {
@@ -120,12 +121,8 @@
       const isExpanded = expandableText.getAttribute('data-expanded') === 'true';
 
       if (!isExpanded) {
-        // EXPAND: Show full text with typing animation
+        // EXPAND: Show truncated base immediately, then type the continuation
         expandableText.setAttribute('data-expanded', 'true');
-        
-        // Clear text and start typing
-        textElement.textContent = '';
-        textElement.classList.add('typing');
         
         // Ensure any previous typing interval is cleared before starting
         const activeInterval = expandableText.dataset.typingInterval;
@@ -134,11 +131,21 @@
           delete expandableText.dataset.typingInterval;
         }
 
-        // Typewriter effect
+        // Compute where the truncation cut off (the base without '...')
+        const truncatedBase = fullText.length > TRUNCATE_LENGTH
+          ? fullText.substring(0, TRUNCATE_LENGTH).trimEnd()
+          : fullText;
+        const continuation = fullText.substring(truncatedBase.length);
+
+        // Show the base text immediately (no re-typing what was already visible)
+        textElement.textContent = truncatedBase;
+        textElement.classList.add('typing');
+
+        // Typewriter effect for the continuation only
         let charIndex = 0;
         const typingInterval = setInterval(() => {
-          if (charIndex < fullText.length) {
-            textElement.textContent += fullText.charAt(charIndex);
+          if (charIndex < continuation.length) {
+            textElement.textContent += continuation.charAt(charIndex);
             charIndex++;
           } else {
             clearInterval(typingInterval);
@@ -377,6 +384,99 @@
     });
   }
 
+  // ================================
+  // CONTACT CARD DROPDOWN & FORM
+  // ================================
+
+  function initContactCard() {
+    const contactCard = document.querySelector('.contact-card');
+    if (!contactCard) return;
+
+    const mailTrigger = contactCard.querySelector('.contact-mail-trigger');
+    const options = contactCard.querySelector('.contact-mail-options');
+    const copyBtn = contactCard.querySelector('.contact-copy-email');
+    const formToggleBtn = contactCard.querySelector('.contact-open-form');
+    const formContainer = contactCard.querySelector('.contact-form');
+    const form = formContainer ? formContainer.querySelector('form') : null;
+    const caretIcon = mailTrigger ? mailTrigger.querySelector('.method-caret i') : null;
+    const emailAddress = 'maker@protonmail.com';
+
+    if (mailTrigger && options) {
+      mailTrigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        const isOpen = options.style.display === 'flex';
+        options.style.display = isOpen ? 'none' : 'flex';
+        if (caretIcon) {
+          caretIcon.className = isOpen ? 'fas fa-chevron-down' : 'fas fa-chevron-up';
+        }
+      });
+    }
+
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async function(e) {
+        e.preventDefault();
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(emailAddress);
+          } else {
+            const tempInput = document.createElement('input');
+            tempInput.value = emailAddress;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            tempInput.remove();
+          }
+          announcePageChange('Email address copied to clipboard');
+        } catch (err) {
+          console.error('Failed to copy email address:', err);
+        }
+      });
+    }
+
+    if (formToggleBtn && formContainer) {
+      formToggleBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const isOpen = formContainer.style.display === 'block';
+        formContainer.style.display = isOpen ? 'none' : 'block';
+      });
+    }
+
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const nameField = form.querySelector('#contactName');
+        const emailField = form.querySelector('#contactEmail');
+        const messageField = form.querySelector('#contactMessage');
+
+        const name = nameField && nameField.value ? nameField.value : '';
+        const fromEmail = emailField && emailField.value ? emailField.value : '';
+        const message = messageField && messageField.value ? messageField.value : '';
+
+        const subject = `Portfolio contact from ${name || 'visitor'}`;
+        const bodyLines = [
+          message,
+          '',
+          '---',
+          `From: ${name || 'Anonymous'} <${fromEmail || 'no-email-provided'}>`
+        ];
+
+        const mailto = `mailto:${emailAddress}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
+        window.location.href = mailto;
+        announcePageChange('Opening your email app to send the message');
+      });
+    }
+
+    // Close options when clicking outside the contact card
+    document.addEventListener('click', function(e) {
+      if (!contactCard.contains(e.target) && options && options.style.display === 'flex') {
+        options.style.display = 'none';
+        if (caretIcon) {
+          caretIcon.className = 'fas fa-chevron-down';
+        }
+      }
+    });
+  }
+
 
   // ================================
   // STORE DISPLAY INTERACTION
@@ -580,70 +680,8 @@
   // ================================
 
   async function initAutoBlogGeneration() {
-    // List of blog post files to load (add new posts here)
-    // Or fetch from a blog-index.json file for full automation
-    const blogPosts = [
-      '10k-downloads.md',
-      '3d-modeling-basics.md',
-      // Add more posts here, or load from blog-index.json
-    ];
-
     const blogTimeline = document.querySelector('.blog-timeline');
     if (!blogTimeline) return;
-
-    // Check if we're using file:// protocol
-    if (window.location.protocol === 'file:') {
-      console.warn('⚠️ BLOG SYSTEM WARNING:');
-      console.warn('You are viewing this page using the file:// protocol.');
-      console.warn('Blog posts cannot load due to CORS restrictions.');
-      console.warn('');
-      console.warn('SOLUTION: Use a local web server instead:');
-      console.warn('  • Python: python -m http.server 8000');
-      console.warn('  • Node.js: npx serve');
-      console.warn('  • PHP: php -S localhost:8000');
-      console.warn('');
-      console.warn('Then open: http://localhost:8000');
-      
-      // Show a user-friendly message in the timeline
-      blogTimeline.innerHTML = `
-        <div style="text-align: center; padding: 3rem; max-width: 600px; margin: 0 auto;">
-          <div style="font-size: 4rem; margin-bottom: 1rem;">⚠️</div>
-          <h2 style="color: var(--color-accent); margin-bottom: 1rem;">Local Server Required</h2>
-          <p style="color: var(--color-text-dim); margin-bottom: 2rem;">
-            Blog posts cannot load when opening HTML files directly (file:// protocol).
-            This is a browser security restriction.
-          </p>
-        <div style="background: rgba(119, 141, 169, 0.1); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
-            <h3 style="color: var(--color-accent); margin-bottom: 1rem;">Quick Fix:</h3>
-            <p style="color: var(--color-text); font-family: 'IBM Plex Mono', monospace; margin-bottom: 0.5rem;">
-              <strong>Python:</strong> python -m http.server 8000
-            </p>
-            <p style="color: var(--color-text); font-family: 'IBM Plex Mono', monospace; margin-bottom: 0.5rem;">
-              <strong>Node.js:</strong> npx serve
-            </p>
-            <p style="color: var(--color-text); font-family: 'IBM Plex Mono', monospace;">
-              <strong>PHP:</strong> php -S localhost:8000
-            </p>
-          </div>
-          <p style="color: var(--color-text-muted); font-size: 0.9rem;">
-            Then open <code style="background: rgba(255,255,255,0.1); padding: 0.2rem 0.5rem; border-radius: 4px;">http://localhost:8000</code> in your browser
-          </p>
-        </div>
-      `;
-      return; // Exit early
-    }
-
-    // Check if there's a blog-index.json file for automatic discovery
-    try {
-      const indexResponse = await fetch('blog/blog-index.json');
-      if (indexResponse.ok) {
-        const index = await indexResponse.json();
-        blogPosts.length = 0; // Clear default list
-        blogPosts.push(...index.posts);
-      }
-    } catch (e) {
-      console.log('No blog-index.json found, using manual list');
-    }
 
     // Clear existing timeline (keep the line)
     const timelineLine = blogTimeline.querySelector('.timeline-line');
@@ -652,21 +690,49 @@
       blogTimeline.appendChild(timelineLine);
     }
 
+    // Primary path: use embedded static data (works everywhere — file://, GitHub Pages, any server)
+    if (window.BLOG_POSTS_DATA && window.BLOG_POSTS_DATA.length > 0) {
+      window.BLOG_POSTS_DATA.forEach((post, index) => {
+        const blogCard = createBlogCard(post, post.id, index);
+        blogTimeline.appendChild(blogCard);
+      });
+      console.log(`✓ Loaded ${window.BLOG_POSTS_DATA.length} blog posts from embedded data`);
+      return;
+    }
+
+    // Fallback: fetch from server (for development without the data file)
+    if (window.location.protocol === 'file:') {
+      blogTimeline.innerHTML = `
+        <div style="text-align: center; padding: 3rem; color: var(--color-text-dim);">
+          <i class="fas fa-exclamation-circle" style="font-size: 2rem; margin-bottom: 1rem; display: block; opacity: 0.5;"></i>
+          <p>Blog data not found. Add posts to <code>blog/blog-posts-data.js</code>.</p>
+        </div>
+      `;
+      return;
+    }
+
+    // Try fetching from blog-index.json
+    const blogPosts = [];
+    try {
+      const indexResponse = await fetch('blog/blog-index.json');
+      if (indexResponse.ok) {
+        const index = await indexResponse.json();
+        blogPosts.push(...index.posts);
+      }
+    } catch (e) {
+      console.log('No blog-index.json found');
+    }
+
     let postIndex = 0;
     for (const postFile of blogPosts) {
       try {
         const postId = postFile.replace('.md', '');
         const response = await fetch(`blog/posts/${postFile}`);
-        
         if (!response.ok) continue;
-        
         const content = await response.text();
         const metadata = parseYAMLFrontmatter(content);
-        
-        // Generate blog card from metadata
         const blogCard = createBlogCard(metadata, postId, postIndex);
         blogTimeline.appendChild(blogCard);
-        
         postIndex++;
       } catch (error) {
         console.error(`Error loading blog post ${postFile}:`, error);
@@ -898,21 +964,27 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
       
       try {
-        // Try to load markdown file
-        const response = await fetch(`blog/posts/${postId}.md`);
-        
-        if (!response.ok) {
-          throw new Error('Post not found');
+        // Try embedded static data first (works everywhere)
+        let markdownContent = null;
+        if (window.BLOG_POSTS_DATA) {
+          const embeddedPost = window.BLOG_POSTS_DATA.find(p => p.id === postId);
+          if (embeddedPost && embeddedPost.content) {
+            markdownContent = embeddedPost.content;
+          }
+        }
+
+        // Fallback to fetch (works when served over HTTP)
+        if (!markdownContent && window.location.protocol !== 'file:') {
+          const response = await fetch(`blog/posts/${postId}.md`);
+          if (response.ok) {
+            const raw = await response.text();
+            markdownContent = raw.replace(/^---\s*\n[\s\S]*?\n---\s*\n/, '');
+          }
         }
         
-        const markdown = await response.text();
-        
-        // Strip YAML frontmatter before rendering
-        const markdownWithoutFrontmatter = markdown.replace(/^---\s*\n[\s\S]*?\n---\s*\n/, '');
-        
         // Parse markdown to HTML using marked.js
-        if (typeof marked !== 'undefined') {
-          const html = marked.parse(markdownWithoutFrontmatter);
+        if (markdownContent && typeof marked !== 'undefined') {
+          const html = marked.parse(markdownContent);
           const documentBody = document.createElement('div');
           documentBody.className = 'document-body';
           documentBody.innerHTML = html;
@@ -921,9 +993,11 @@
           postContent.appendChild(documentBody);
 
           applyDocumentPresentation(documentBody);
+        } else if (markdownContent) {
+          // Fallback: display as plain text
+          postContent.innerHTML = `<pre>${markdownContent}</pre>`;
         } else {
-          // Fallback: display as plain text with basic formatting
-          postContent.innerHTML = `<pre>${markdownWithoutFrontmatter}</pre>`;
+          throw new Error('Post content not available');
         }
         
         // Extract and display metadata from blog card
@@ -1356,9 +1430,14 @@
 
   function createProjectCard(project) {
     const card = document.createElement('article');
-    card.className = `dashboard-card card-3d project-card project-card--${project.statusType || 'default'}`;
+    const statusType = project.statusType || 'default';
+    const statusLabel = (project.status || project.category || 'Project').toString().toUpperCase();
+    const categoryLabel = (project.category || project.status || 'Project').toString().toUpperCase();
 
-    const tagsHTML = project.tags ? project.tags.map(tag => `<span>${tag}</span>`).join('') : '';
+    card.className = `dashboard-card card-3d project-card project-card--${statusType}`;
+
+    const tagsArray = Array.isArray(project.tags) ? project.tags : [];
+    const tagsHTML = tagsArray.length ? tagsArray.map(tag => `<span>${tag}</span>`).join('') : '';
     const linkHTML = project.link ? 
       `<a class="card-link" href="${project.link}" target="_blank"><i class="fas fa-external-link-alt"></i> VIEW PROJECT</a>` :
       `<span class="card-link card-link--disabled"><i class="fas fa-link-slash"></i> NO LINK</span>`;
@@ -1368,12 +1447,12 @@
         <div class="thumbnail-placeholder">
           <i class="${project.icon}"></i>
         </div>
-        <div class="project-status project-status--${project.statusType}">
-          <i class="${getStatusIcon(project.statusType)}"></i> ${project.status.toUpperCase()}
+        <div class="project-status project-status--${statusType}">
+          <i class="${getStatusIcon(statusType)}"></i> ${statusLabel}
         </div>
       </div>
       <div class="blog-card-header">
-        <span class="card-eyebrow"><i class="${project.icon}"></i> ${project.category.toUpperCase()}</span>
+        <span class="card-eyebrow"><i class="${project.icon}"></i> ${categoryLabel}</span>
         <h3>${project.title}</h3>
       </div>
       <div class="card-body">
