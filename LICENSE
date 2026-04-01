@@ -1,9 +1,9 @@
-Copyright (c) 2025 Plu101
+Copyright (c) 2025 pH-level5
 
 All rights reserved.
 
 This repository contains the source code, styling, and custom blog workflow
-for the personal PLU101 portfolio website.
+for the personal pH-level5 portfolio website.
 
 Except where otherwise noted, you are NOT permitted to:
 
@@ -11,7 +11,7 @@ Except where otherwise noted, you are NOT permitted to:
   logic used to implement the dashboard, blog system, or overall visual design;
 - Reuse the custom blog parsing and rendering workflow (including index
   generation and client-side parsing logic) in your own projects;
-- Use the PLU101 name, logo, or branding assets in a way that suggests
+- Use the pH-level5 name, logo, or branding assets in a way that suggests
   endorsement or affiliation without prior written permission.
 
 You ARE permitted to:

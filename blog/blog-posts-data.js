@@ -3,7 +3,7 @@
 // ================================
 // This file embeds all blog post metadata and content so the blog works
 // fully statically (GitHub Pages, file://, or any HTTP server) without
-// requiring any backend. Add new posts here when you publish them.
+// requiring any backend. Add new posts here.
 // ================================
 
 window.BLOG_POSTS_DATA = [

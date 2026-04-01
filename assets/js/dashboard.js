@@ -2,7 +2,7 @@
 // TECH CREATOR DASHBOARD
 // Interactive Dashboard JavaScript
 //
-// (c) 2025 Plu101 – All rights reserved.
+// (c) 2025 pH-level5 – All rights reserved.
 // Custom UI logic and blog parsing workflow are proprietary.
 // Third-party libraries (e.g. marked.js, Font Awesome) remain under
 // their own licenses.

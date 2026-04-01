@@ -1,6 +1,6 @@
-# Plu101 Personal Portfolio
+# pH-level5 Personal Portfolio
 
-[![Live Demo](https://img.shields.io/badge/demo-live-success)](https://plu101.github.io/personal_profile)
+[![Live Demo](https://img.shields.io/badge/demo-live-success)](https://pH-level5.github.io/personal_profile)
 [![HTML](https://img.shields.io/badge/HTML-5-orange)](https://developer.mozilla.org/en-US/docs/Web/HTML)
 [![CSS](https://img.shields.io/badge/CSS-3-blue)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
@@ -83,13 +83,13 @@ Unless otherwise stated:
 - The code is **not licensed for reuse** in other public or commercial projects
 - Third-party libraries and assets remain under their respective licenses
 
-For licensing or usage inquiries, contact: @plu101
+For licensing or usage inquiries, contact: @pH-level5
 
 ---
 
 ## Credits
 
-- **Design & Development:** Plu101
+- **Design & Development:** pH-level5
 - **Markdown Rendering:** marked.js
 - **Icons:** Font Awesome
 - **Fonts:** Google Fonts
@@ -99,4 +99,4 @@ For licensing or usage inquiries, contact: @plu101
 
 Crafted with curiosity, iteration, a bit of vibe-coding and way too much tweaking.
 
-**[View Live Site](https://plu101.github.io/personal_profile)**
+**[View Live Site](https://pH-level5.github.io/personal_profile)**
