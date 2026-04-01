@@ -1913,7 +1913,11 @@ body {
 
 .display-container {
   display: flex;
-  gap: 80px;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
   transform-style: preserve-3d;
   animation: rotate-display 20s linear infinite;
 }
@@ -1928,11 +1932,24 @@ body {
 }
 
 .display-item {
+  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-md);
   transform-style: preserve-3d;
+}
+
+.display-item[data-item="1"] {
+  transform: rotateY(0deg) translateZ(180px);
+}
+
+.display-item[data-item="2"] {
+  transform: rotateY(120deg) translateZ(180px);
+}
+
+.display-item[data-item="3"] {
+  transform: rotateY(240deg) translateZ(180px);
 }
 
 .item-cube {
@@ -1943,11 +1960,11 @@ body {
   animation: float-cube 3s ease-in-out infinite;
 }
 
-.item-cube[data-item="2"] {
+.display-item[data-item="2"] .item-cube {
   animation-delay: -1s;
 }
 
-.item-cube[data-item="3"] {
+.display-item[data-item="3"] .item-cube {
   animation-delay: -2s;
 }
 
@@ -2029,6 +2046,37 @@ body {
   font-size: 1.2rem;
   flex-shrink: 0;
   opacity: 0.85;
+}
+
+.store-closed-notice--weather {
+  background: rgba(74, 144, 226, 0.08); 
+  border-color: rgba(74, 144, 226, 0.3);
+  color: rgba(140, 190, 255, 0.9);
+}
+
+.animated-weather-icon {
+  animation: rain-cloud-anim 2.5s infinite ease-in-out;
+  color: #74a1e6;
+}
+
+@keyframes rain-cloud-anim {
+  0% { 
+    transform: translateY(0px) rotate(0deg); 
+  }
+  25% { 
+    transform: translateY(2px) rotate(3deg); 
+    text-shadow: 0 2px 8px rgba(116, 161, 230, 0.5);
+  }
+  50% { 
+    transform: translateY(4px) rotate(-2deg); 
+  }
+  75% { 
+    transform: translateY(2px) rotate(1deg); 
+    text-shadow: 0 2px 8px rgba(116, 161, 230, 0.3);
+  }
+  100% { 
+    transform: translateY(0px) rotate(0deg); 
+  }
 }
 
 .store-card--closed {
@@ -2727,8 +2775,11 @@ body {
   }
 
   .display-container {
-    gap: 40px;
+    /* radial positioning adjusted for mobile */
   }
+  .display-item[data-item="1"] { transform: rotateY(0deg) translateZ(120px); }
+  .display-item[data-item="2"] { transform: rotateY(120deg) translateZ(120px); }
+  .display-item[data-item="3"] { transform: rotateY(240deg) translateZ(120px); }
 
   .item-cube {
     width: 80px;

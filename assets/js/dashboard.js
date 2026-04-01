@@ -33,7 +33,6 @@
     initAutoBlogGeneration(); // Auto-generate blog cards from markdown files
     initBlogPostViewer();
     initDownloadModal(); // Initialize app download modal with Ko-fi prompt
-    initDetailsModal(); // Initialize app details modal
     initProjectsBanner(); // Initialize projects banner animations
     initProjectsLoader(); // Load and render projects from JSON
     console.log('✓ Dashboard initialized');
@@ -1213,91 +1212,6 @@
     });
 
     console.log('✓ Download modal initialized');
-  }
-
-  // ================================
-  // APP DETAILS MODAL
-  // ================================
-
-  function initDetailsModal() {
-    const detailsBtn = document.getElementById('viewDetailsBtn');
-    const detailsModal = document.getElementById('detailsModal');
-    const closeBtn = detailsModal?.querySelector('.download-modal__close');
-    const backdrop = detailsModal?.querySelector('.download-modal__backdrop');
-    const downloadFromDetailsBtn = document.getElementById('downloadFromDetailsBtn');
-
-    function showDetailsModal() {
-      if (!detailsModal) return;
-      detailsModal.setAttribute('aria-hidden', 'false');
-      detailsModal.classList.add('is-open');
-      document.body.style.overflow = 'hidden';
-      
-      const firstFocusable = detailsModal.querySelector('button, a');
-      if (firstFocusable) firstFocusable.focus();
-      
-      announcePageChange('App details modal opened');
-    }
-
-    function hideDetailsModal() {
-      if (!detailsModal) return;
-      detailsModal.setAttribute('aria-hidden', 'true');
-      detailsModal.classList.remove('is-open');
-      document.body.style.overflow = '';
-      announcePageChange('App details modal closed');
-    }
-
-    // Event: Show details modal
-    if (detailsBtn) {
-      detailsBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        showDetailsModal();
-      });
-    }
-
-    // Event: Download from details modal
-    if (downloadFromDetailsBtn) {
-      downloadFromDetailsBtn.addEventListener('click', () => {
-        hideDetailsModal();
-        // Trigger the download modal with Ko-fi prompt
-        setTimeout(() => {
-          const downloadModal = document.getElementById('downloadModal');
-          if (downloadModal) {
-            downloadModal.setAttribute('aria-hidden', 'false');
-            downloadModal.classList.add('is-open');
-            document.body.style.overflow = 'hidden';
-          }
-        }, 300);
-      });
-    }
-
-    // Event: Close button
-    if (closeBtn) {
-      closeBtn.addEventListener('click', hideDetailsModal);
-    }
-
-    // Event: Click backdrop to close
-    if (backdrop) {
-      backdrop.addEventListener('click', hideDetailsModal);
-    }
-
-    // Event: Escape key to close
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && detailsModal?.classList.contains('is-open')) {
-        hideDetailsModal();
-      }
-    });
-
-    // Handle inline links that might close modal
-    const inlineLinks = detailsModal?.querySelectorAll('.inline-link');
-    inlineLinks?.forEach(link => {
-      link.addEventListener('click', (e) => {
-        if (link.getAttribute('href').startsWith('#')) {
-          hideDetailsModal();
-        }
-      });
-    });
-
-    console.log('✓ Details modal initialized');
   }
 
   // ================================

@@ -56,7 +56,7 @@
         <div class="header-widgets">
           <div class="widget widget--stats">
             <span class="widget-icon"><i class="fas fa-arrow-up"></i></span>
-            <span class="widget-value">10k+</span>
+            <span class="widget-value" id="date-time">26.03.2026</span>
           </div>
           <div class="widget widget--pulse">
             <span class="pulse-dot"></span>
@@ -89,17 +89,17 @@
                 </p>
                 <div class="stats-row">
                   <div class="stat-item">
-                    <div class="stat-icon"><i class="fas fa-code"></i></div>
+                    <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
                     <div class="stat-content">
-                      <div class="stat-label">Active Projects</div>
-                      <div class="stat-value" data-count="8">0</div>
+                      <div class="stat-label">Experience Level</div>
+                      <div class="stat-value" style="font-size: 1.2rem;">Student</div>
                     </div>
                   </div>
                   <div class="stat-item">
-                    <div class="stat-icon"><i class="fas fa-layer-group"></i></div>
+                    <div class="stat-icon"><i class="fas fa-laptop-code"></i></div>
                     <div class="stat-content">
-                      <div class="stat-label">Tech Skills</div>
-                      <div class="stat-value" data-count="12">0</div>
+                      <div class="stat-label">Primary Focus</div>
+                      <div class="stat-value" style="font-size: 1.2rem;">Software Dev</div>
                     </div>
                   </div>
                 </div>
@@ -125,7 +125,7 @@
                     <div class="skill-icon"><i class="fas fa-palette"></i></div>
                     <div class="skill-content">
                       <strong>Creative Assets</strong>
-                      <p>Designing game assets, sound FX, and digital content — mostly for Unreal Engine, always for fun</p>
+                      <p>Designing game assets, always for fun, but currently paused, due to my quality standards rising and time constraints.</p>
                     </div>
                   </div>
                   <div class="skill-item">
@@ -152,9 +152,8 @@
                   <span class="tech-badge"><i class="fas fa-code"></i> C#</span>
                   <span class="tech-badge"><i class="fas fa-code"></i> Python</span>
                   <span class="tech-badge"><i class="fas fa-code"></i> JavaScript</span>
-                  <span class="tech-badge"><i class="fas fa-code"></i> Perl</span>
-                  <span class="tech-badge"><i class="fas fa-gamepad"></i> Source Engine</span>
-                  <span class="tech-badge"><i class="fas fa-cube"></i> Unreal Engine</span>
+                  <span class="tech-badge"><i class="fas fa-gamepad"></i> Godot</span>
+                  <span class="tech-badge"><i class="fas fa-cube"></i> Unity</span>
                   <span class="tech-badge"><i class="fab fa-github"></i> Git</span>
                 </div>
               </div>
@@ -170,7 +169,7 @@
                 <div class="interest-list">
                   <div class="interest-item">
                     <i class="fas fa-brain"></i>
-                    <span>Computer Science & Algorithms</span>
+                    <span>Computer Science & Engineering</span>
                   </div>
                   <div class="interest-item">
                     <i class="fas fa-gamepad"></i>
@@ -212,7 +211,7 @@
               <p class="banner-description">Explore the projects that made it out of the lab — from game dev experiments to web apps, tools, and creative assets</p>
               <div class="banner-stats">
                 <div class="banner-stat">
-                  <span class="stat-number" data-count="6">0</span>
+                  <span class="stat-number" data-count="1">0</span>
                   <span class="stat-label">Active Projects</span>
                 </div>
                 <div class="banner-stat">
@@ -220,76 +219,65 @@
                   <span class="stat-label">In Development</span>
                 </div>
                 <div class="banner-stat">
-                  <span class="stat-number" data-count="1">0</span>
+                  <span class="stat-number" data-count="2">0</span>
                   <span class="stat-label">Featured</span>
                 </div>
               </div>
             </div>
           </div>
-          <!-- Featured Project: MindOS -->
+          <!-- Featured Project: Lunar Glass -->
           <div class="section-title">
             <h2><i class="fas fa-star"></i> FEATURED PROJECT</h2>
             <p class="section-subtitle">My main focus — actively building toward a public release</p>
           </div>
 
           <div class="dashboard-grid projects-grid" id="featuredProjectsGrid">
-            <!-- MindOS - Main Featured Project -->
+            <!-- Lunar Glass - Main Featured Project -->
             <article class="dashboard-card card-3d project-card project-card--featured">
-              <div class="project-thumbnail project-thumbnail--mindos">
-                <div class="thumbnail-placeholder">
-                  <div class="app-icon-container">
-                    <i class="fas fa-brain"></i>
-                    <div class="icon-glow"></div>
-                  </div>
-                </div>
-                <div class="project-status project-status--active">
-                  <i class="fas fa-code"></i> IN ACTIVE DEVELOPMENT
+              <div class="project-thumbnail project-thumbnail--lunarglass">
+                <img src="projects/lunag-banner.png" alt="Lunar Glass CSS Banner" style="width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 1;">
+                <div class="project-status project-status--active" style="z-index: 2;">
+                  <i class="fas fa-check-circle"></i> RELEASED
                 </div>
               </div>
               <div class="blog-card-header">
-                <span class="card-eyebrow"><i class="fas fa-rocket"></i> WEB APPLICATION</span>
-                <h3>MindOS</h3>
+                <span class="card-eyebrow"><i class="fas fa-paint-brush"></i> CSS LIBRARY</span>
+                <h3>Lunar Glass</h3>
               </div>
               <div class="card-body">
                  <p class="expandable-text" data-expanded="false">
-                   <span class="text-content">A personal management system designed for students and knowledge workers. MindOS unifies notes, documents, task management, and daily documentation into one cohesive platform. Features bidirectional note linking (wiki-style), hierarchical document organization by class and project, interactive graph visualization of connected information, and automated training log (Berichtsheft) generation. Built with React, TypeScript, and local-first architecture—your data stays on your machine. Future updates will support optional AI features (bring your own API key or self-host). Currently in active development with core features functional and testing phases approaching.</span>
+                   <span class="text-content">A darkish, moody modern glassmorphism design library. This library provides a toned-down, simple, and reusable foundation of layered backdrop-filter glass, ambient scene radials, and SVG-noise grain textures. Lunar Glass CSS includes four built-in themes out of the box. Originally derived from an older platform project, the UI components and design system were curated into this lightweight, standalone CSS library.</span>
                    <button class="read-more-btn"><i class="fas fa-chevron-right"></i> READ MORE</button>
                  </p>
                  <div class="project-tags">
-                   <span><i class="fab fa-react"></i> React</span>
-                   <span><i class="fas fa-code"></i> TypeScript</span>
-                   <span><i class="fas fa-database"></i> SQLite</span>
-                   <span><i class="fas fa-lock"></i> Local-First</span>
-                   <span><i class="fas fa-graduation-cap"></i> For Students</span>
+                   <span><i class="fab fa-css3-alt"></i> CSS3</span>
+                   <span><i class="fab fa-html5"></i> HTML5</span>
+                   <span><i class="fas fa-layer-group"></i> Glassmorphism</span>
+                   <span><i class="fas fa-swatchbook"></i> Themes</span>
                  </div>
                 <div class="project-notice project-notice--development">
-                  <i class="fas fa-hammer"></i>
-                  <span>Phase 4 of 7 complete — preparing for public testing</span>
-                </div>
-                <div class="progress-bar" style="margin-top: 1rem;">
-                  <div class="progress-fill" style="width: 55%"></div>
-                  <span class="progress-text">55% COMPLETE</span>
+                  <i class="fas fa-code"></i>
+                  <span>Available open-source on GitHub</span>
                 </div>
               </div>
               <div class="card-footer card-footer--download">
                 <div class="download-actions">
-                  <button class="card-link btn-download btn-download--primary" id="downloadAppBtn" data-app-version="1.0.0" disabled style="opacity: 0.6; cursor: not-allowed;">
+                  <a class="card-link btn-download btn-download--primary" href="https://plu101.github.io/Lunar-Glass-CSS-Libary/" target="_blank" style="text-decoration: none;">
                     <span class="btn-download-icon">
-                      <i class="fas fa-clock"></i>
+                      <i class="fas fa-eye"></i>
                     </span>
                     <span class="btn-download-text">
-                      <span class="btn-main-text">PUBLIC RELEASE COMING SOON</span>
-                      <span class="btn-sub-text">Free • Cross-Platform Web App</span>
+                      <span class="btn-main-text">LIVE PREVIEW</span>
+                      <span class="btn-sub-text">View Showcase Site</span>
                     </span>
-                  </button>
-                  <button class="btn-details" id="viewDetailsBtn">
-                    <i class="fas fa-info-circle"></i>
-                    <span>View Details</span>
-                  </button>
+                  </a>
+                  <a class="btn-details" href="https://github.com/Plu101/Lunar-Glass-CSS-Libary" target="_blank" style="text-decoration: none;">
+                    <i class="fab fa-github"></i>
+                    <span>Source Code</span>
+                  </a>
                 </div>
                 <div class="card-meta">
-                  <span class="card-year"><i class="far fa-calendar"></i> 2025</span>
-                  <span class="card-phase"><i class="fas fa-code-branch"></i> Phase 4/7</span>
+                  <span class="card-year"><i class="far fa-calendar"></i> 2026</span>
                 </div>
               </div>
             </article>
@@ -297,29 +285,24 @@
             <!-- 3D Creator - Experimental Project -->
             <article class="dashboard-card card-3d project-card project-card--experimental">
               <div class="project-thumbnail project-thumbnail--3d">
-                <div class="thumbnail-placeholder">
-                  <div class="rotating-cube">
-                    <i class="fas fa-cube"></i>
-                  </div>
-                </div>
+                <img src="projects/SuperPong.png" alt="Super Pong Game Banner" style="width: 100%; height: 100%; object-fit: cover; position: relative; z-index: 1;">
                 <div class="project-status project-status--experimental">
                   <i class="fas fa-flask"></i> EXPERIMENTAL
                 </div>
               </div>
               <div class="blog-card-header">
                 <span class="card-eyebrow"><i class="fas fa-cube"></i> EXPERIMENTAL</span>
-                <h3>3D Creator</h3>
+                <h3>Super Pong</h3>
               </div>
               <div class="card-body">
                 <p class="expandable-text" data-expanded="false">
-                  <span class="text-content">A browser-based 3D modeling playground built with React and Three.js. Create primitive shapes, tweak materials with PBR controls, apply procedural modifiers (noise displacement, arrays, subdivision), and export to standard formats (GLTF, OBJ, STL). Features an interactive viewport with orbit controls and transform gizmos for quick 3D prototyping. A fun learning project exploring WebGL and 3D programming concepts.</span>
+                  <span class="text-content">A version of the almighty Pong game with a spin ;) This little minigame was a self-learning project. I wanted to create a small-scope browser game with a simple, playable design. Super Pong's main specialty is combining core Pong gameplay with extra elements, like the ability to spin the ball in two directions, different paddles, and unique balls that excel in certain playstyles.</span>
                   <button class="read-more-btn"><i class="fas fa-chevron-right"></i> READ MORE</button>
                 </p>
                 <div class="project-tags">
-                  <span><i class="fab fa-react"></i> React</span>
-                  <span><i class="fas fa-cube"></i> Three.js</span>
-                  <span><i class="fas fa-swatchbook"></i> WebGL</span>
-                  <span><i class="fas fa-code"></i> TypeScript</span>
+                  <span><i class="fab fa-js"></i> JavaScript</span>
+                  <span><i class="fab fa-html5"></i> HTML5</span>
+                  <span><i class="fas fa-code"></i> Pyodide & Pyscript</span>
                 </div>
                 <div class="project-notice project-notice--experimental">
                   <i class="fas fa-flask"></i>
@@ -327,10 +310,10 @@
                 </div>
               </div>
               <div class="card-footer">
-                <a class="card-link" href="../3dCreator/index.html" target="_blank">
-                  <i class="fas fa-external-link-alt"></i> TRY DEMO
+                <a class="card-badge" target="_blank">
+                  <i class="fas fa-car-side"></i> Currently Being polished for showcase..
                 </a>
-                <span class="card-year"><i class="far fa-calendar"></i> 2025</span>
+                <span class="card-year"><i class="far fa-calendar"></i> 2024</span>
               </div>
             </article>
           </div>
@@ -349,7 +332,7 @@
                 <h3>Modern UI Components</h3>
               </div>
               <div class="card-body">
-                <p>Experimental CSS component library with modern glassmorphism effects and animated backgrounds. Testing different UI patterns and design systems. Private repo, might release snippets or demos later.</p>
+                <p>My latest passion is UI/UX design. Having a backend background, AI tools have provided the perfect entry point for me to start building user experiences from scratch. Rather than letting AI do all the work, I love tinkering with ideas, customizing them, and diving into UI performance. I'm fascinated by the psychology of user interaction and how optimizing exactly how an element responds, even in subtle ways, can completely transform the feel of an application.</p>
                 <div class="project-tags">
                   <span><i class="fab fa-css3"></i> CSS3</span>
                   <span><i class="fas fa-palette"></i> UI/UX</span>
@@ -358,7 +341,7 @@
               </div>
               <div class="card-footer">
                 <span class="card-status"><i class="fas fa-code"></i> Private Repo</span>
-                <span class="card-year"><i class="far fa-calendar"></i> 2025</span>
+                <span class="card-year"><i class="far fa-calendar"></i> 2024</span>
               </div>
             </article>
 
@@ -433,8 +416,8 @@
             </div>
 
             <!-- Store Cards Grid -->
-            <div class="store-closed-notice">
-              <i class="fas fa-pause-circle"></i>
+            <div class="store-closed-notice store-closed-notice--weather">
+              <i class="fas fa-cloud-showers-heavy animated-weather-icon"></i>
               <span>The Unreal Marketplace store is <strong>currently closed</strong>. I'll reopen it when I have more time to create and maintain assets.</span>
             </div>
 
@@ -464,10 +447,7 @@
                       <span class="feature-icon"><i class="fas fa-cube"></i></span>
                       Future 3D assets and packs (when I feel like it!)
                     </li>
-                    <li>
-                      <span class="feature-icon"><i class="fas fa-heart"></i></span>
-                      Made with care in my spare time
-                    </li>
+                    
                   </ul>
                   <div class="shop-actions shop-actions--disabled">
                     <a class="btn-primary btn--disabled" href="#" aria-disabled="true" tabindex="-1">
@@ -579,17 +559,10 @@
                  </div>
 
                  <div class="support-benefits">
-                   <h3><i class="fas fa-star"></i> SUPPORTER PERKS</h3>
                    <div class="kofi-status-notice">
                      <i class="fas fa-info-circle"></i>
-                     <span>Ko-fi is <strong>not yet connected</strong>. Perks will be active once the payment integration is set up.</span>
+                     <span>My Ko-fi is <strong>not currently hooked up</strong>, and I don't have any perks or content to give out right now. Check back later!</span>
                    </div>
-                   <ul class="support-perks--pending">
-                     <li><i class="fas fa-check"></i> Early access to new releases</li>
-                     <li><i class="fas fa-check"></i> Development updates</li>
-                     <li><i class="fas fa-check"></i> Priority bug fixes</li>
-                     <li><i class="fas fa-check"></i> Feature requests</li>
-                   </ul>
                  </div>
                </div>
              </article>
@@ -649,166 +622,6 @@
         </div>
       </section>
     </main>
-
-    <!-- App Details Modal -->
-    <div id="detailsModal" class="download-modal details-modal" aria-hidden="true" role="dialog" aria-labelledby="detailsModalTitle" aria-modal="true">
-      <div class="download-modal__backdrop"></div>
-      <div class="download-modal__container download-modal__container--large">
-        <div class="download-modal__content">
-          <button class="download-modal__close" aria-label="Close modal">
-            <i class="fas fa-times"></i>
-          </button>
-          
-          <div class="download-modal__header">
-            <div class="modal-icon modal-icon--app">
-              <i class="fas fa-brain"></i>
-            </div>
-            <h2 id="detailsModalTitle">MindOS - Project Details</h2>
-            <div class="version-badge">
-              <i class="fas fa-code-branch"></i> Phase 4 of 7 - In Active Development
-            </div>
-          </div>
-          
-          <div class="download-modal__body details-modal__body">
-             <div class="details-section">
-               <h3><i class="fas fa-star"></i> What is MindOS?</h3>
-               <p>
-                 MindOS is a personal management system built specifically for students and knowledge workers who deal with fragmented information across multiple platforms. It unifies notes, documents, task management, and daily training logs (Berichtsheft) into a single, cohesive workspace.
-               </p>
-               <p>
-                 Think of it as a personal wiki + task manager + document organizer, all working together seamlessly. Your data stays local on your machine—no cloud required, no subscriptions, just a fast, privacy-focused productivity tool for your studies.
-               </p>
-             </div>
-
-             <div class="details-section">
-               <h3><i class="fas fa-sparkles"></i> Core Features</h3>
-               <ul class="features-list">
-                 <li><i class="fas fa-check"></i> <strong>Bidirectional Note Linking:</strong> Wiki-style `[[links]]` that connect your thoughts and create a knowledge graph</li>
-                 <li><i class="fas fa-check"></i> <strong>Task Management:</strong> Organize your assignments, study goals, and daily todos with priorities and due dates</li>
-                 <li><i class="fas fa-check"></i> <strong>Document Management:</strong> Hierarchical organization (Classes → Projects → Documents) with drag-and-drop</li>
-                 <li><i class="fas fa-check"></i> <strong>Interactive Graph View:</strong> Visualize connections between notes, tasks, and documents</li>
-                 <li><i class="fas fa-check"></i> <strong>Smart Search:</strong> Full-text fuzzy search across all content with tag filtering</li>
-                 <li><i class="fas fa-check"></i> <strong>Markdown Support:</strong> Rich markdown editor with live preview, YAML frontmatter, and Mermaid diagrams</li>
-                 <li><i class="fas fa-check"></i> <strong>Local-First:</strong> SQLite database, all data stays on your machine, works offline</li>
-                 <li><i class="fas fa-clock"></i> <strong>Future: Optional AI Features:</strong> Bring your own API key or self-host AI for smart task suggestions and content analysis</li>
-               </ul>
-             </div>
-
-             <div class="details-section">
-               <h3><i class="fas fa-laptop"></i> Tech Stack</h3>
-               <div class="requirements-grid">
-                 <div class="requirement-item">
-                   <div class="req-icon"><i class="fab fa-react"></i></div>
-                   <div class="req-content">
-                     <strong>Frontend</strong>
-                     <p>React 18 + TypeScript</p>
-                   </div>
-                 </div>
-                 <div class="requirement-item">
-                   <div class="req-icon"><i class="fas fa-server"></i></div>
-                   <div class="req-content">
-                     <strong>Backend</strong>
-                     <p>Node.js + Express</p>
-                   </div>
-                 </div>
-                 <div class="requirement-item">
-                   <div class="req-icon"><i class="fas fa-database"></i></div>
-                   <div class="req-content">
-                     <strong>Database</strong>
-                     <p>SQLite (local)</p>
-                   </div>
-                 </div>
-                 <div class="requirement-item">
-                   <div class="req-icon"><i class="fas fa-graduation-cap"></i></div>
-                   <div class="req-content">
-                     <strong>Target Users</strong>
-                     <p>Students & Trainees</p>
-                   </div>
-                 </div>
-                 <div class="requirement-item">
-                   <div class="req-icon"><i class="fas fa-palette"></i></div>
-                   <div class="req-content">
-                     <strong>Styling</strong>
-                     <p>Tailwind CSS</p>
-                   </div>
-                 </div>
-                 <div class="requirement-item">
-                   <div class="req-icon"><i class="fas fa-lock"></i></div>
-                   <div class="req-content">
-                     <strong>Privacy</strong>
-                     <p>Local-first, offline-capable</p>
-                   </div>
-                 </div>
-               </div>
-             </div>
-
-             <div class="details-section">
-               <h3><i class="fas fa-shield-alt"></i> Privacy & AI Features</h3>
-               <div class="testing-notice">
-                 <p>
-                   <strong>Your Data, Your Control:</strong> MindOS stores all data locally on your machine using SQLite. No cloud sync required, no accounts needed.
-                 </p>
-                 <p>
-                   <strong>Future AI Features (Optional):</strong> Planned AI features will require you to provide your own:
-                 </p>
-                 <ul style="margin-top: 0.5rem;">
-                   <li><i class="fas fa-check"></i> <strong>Self-hosted AI:</strong> Run models locally, data never leaves your machine</li>
-                   <li><i class="fas fa-exclamation-triangle"></i> <strong>API Key (Cloud AI):</strong> Use services like OpenAI, Claude, etc. — data is sent to their servers (you control this)</li>
-                 </ul>
-                 <p style="margin-top: 0.5rem;">
-                   <strong>Important:</strong> If you use a cloud AI service, your data will be sent to that provider according to their privacy policy. MindOS will clearly indicate when data leaves your machine. The choice is always yours.
-                 </p>
-               </div>
-             </div>
-
-            <div class="details-section">
-              <h3><i class="fas fa-code-branch"></i> Development Progress</h3>
-              <div class="testing-notice">
-                <p>
-                  <strong>Current Status:</strong> Phase 4 of 7 complete (55% overall). Core features are functional including the note system, document management, task system with AI extraction, and graph visualization.
-                </p>
-                <p><strong>Completed Phases:</strong></p>
-                <ul style="margin-top: 0.5rem;">
-                  <li>✅ Phase 1: Foundation & basic note system</li>
-                  <li>✅ Phase 2: Advanced linking & graph visualization</li>
-                  <li>✅ Phase 3: Document management with hierarchy</li>
-                   <li>✅ Phase 4: Task management system</li>
-                  <li>⏳ Phase 5: Berichtsheft generator (next)</li>
-                  <li>⏳ Phase 6: Diagram editor integration</li>
-                   <li>⏳ Phase 7: Optional AI integration, polish & public release</li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="details-section">
-              <h3><i class="fas fa-calendar-alt"></i> Release Timeline</h3>
-              <p>
-                I'm aiming for public testing in early 2025, with a full release following user feedback. The app is being built methodically—each phase adds solid, tested features rather than rushing to launch. Check the blog for development updates and progress reports.
-              </p>
-            </div>
-
-             <div class="details-section">
-               <h3><i class="fas fa-question-circle"></i> Want to Know More?</h3>
-               <p>
-                 Read the full project announcement in the <a href="index.html#blog" class="inline-link">Blog section</a>, submit a 
-                 <a href="contact.html" class="inline-link">support ticket</a>, or reach out via the 
-                 <a href="index.html#support" class="inline-link">Support page</a> if you have questions about features or release plans.
-               </p>
-             </div>
-          </div>
-          
-          <div class="download-modal__actions">
-            <button class="btn-modal btn-modal--download btn-modal--large" id="downloadFromDetailsBtn" disabled style="opacity: 0.6; cursor: not-allowed;">
-              <span class="btn-icon"><i class="fas fa-clock"></i></span>
-              <span class="btn-text">
-                <span class="btn-title">Public Release Coming Soon</span>
-                <span class="btn-subtitle">Free • Web-based, no installation required</span>
-              </span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- Download Modal with Ko-fi Support Prompt -->
     <div id="downloadModal" class="download-modal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
