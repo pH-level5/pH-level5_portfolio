@@ -22,7 +22,7 @@ Hello, and welcome! I built this site as a personal side project and as a key pa
 
 ## Why I Built This
 
-First and foremost, I wanted a place to provide real insight into my projects and everything I have done so far in the world of software engineering. Whether it's browser-based tools, backend experiments, or full applications, this hub is designed to showcase my skills. Naturally, it also serves as my professional job portfolio—a living resume where I can demonstrate what I know and how I build things.
+First and foremost, I wanted a place to provide real insight into my projects and everything I have done so far in the world of software engineering. Whether it's browser-based tools, backend experiments, or full applications, this hub is designed to showcase my skills. Naturally, it also serves as my living resume where I can demonstrate what I know and how I build things.
 
 ## The Asset Store (And Why It's On Hold)
 

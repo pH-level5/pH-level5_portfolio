@@ -35,6 +35,7 @@
     initDownloadModal(); // Initialize app download modal with Ko-fi prompt
     initProjectsBanner(); // Initialize projects banner animations
     initProjectsLoader(); // Load and render projects from JSON
+    initTerminalEasterEgg(); // Typewriter easter egg in Future Projects card
     console.log('✓ Dashboard initialized');
   });
 
@@ -1476,6 +1477,61 @@
       lerp,
       map
     };
+  }
+
+  // ================================
+  // TERMINAL Free Space Easter Egg
+  // ================================
+
+  function initTerminalEasterEgg() {
+    const output = document.getElementById('terminalOutput');
+    if (!output) return;
+
+    const lines = [
+      'initializing_ideas.exe...',
+      'scanning passion_projects/',
+      '// TODO: build it someday',
+      'coffee.sh required first',
+      'maybe_next_semester.sh',
+      'git commit -m "future me problem"',
+      '// what does up, up, down, down, left, right, left, right, b, a, do?',
+      'still_compiling... please wait',
+      'null pointer to free time',
+      'rm -rf procrastination/', 
+      'npm install moo',
+      'Here Is to much free space...',
+    ];
+
+    let lineIndex = 0;
+    let charIndex = 0;
+    let deleting = false;
+    let timer = null;
+
+    function tick() {
+      const current = lines[lineIndex];
+      if (!deleting) {
+        charIndex++;
+        output.textContent = current.slice(0, charIndex);
+        if (charIndex === current.length) {
+          deleting = true;
+          timer = setTimeout(tick, 2200);
+          return;
+        }
+        timer = setTimeout(tick, 55 + Math.random() * 45);
+      } else {
+        charIndex--;
+        output.textContent = current.slice(0, charIndex);
+        if (charIndex === 0) {
+          deleting = false;
+          lineIndex = (lineIndex + 1) % lines.length;
+          timer = setTimeout(tick, 380);
+          return;
+        }
+        timer = setTimeout(tick, 28);
+      }
+    }
+
+    timer = setTimeout(tick, 800);
   }
 
 })();
