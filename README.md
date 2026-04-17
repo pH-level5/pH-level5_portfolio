@@ -8,7 +8,7 @@
 
 This repository exists primarily to **present the live site**. The underlying implementation is **not intended for public reuse or redistribution**.
 
- **Live site:** [WIP]
+ [**Live site**](https://pH-level5.github.io/pH-level5_portfolio)
 
 ---
 
